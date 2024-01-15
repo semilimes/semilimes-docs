@@ -1,16 +1,23 @@
-openapi: 3.0.1
+openapi: 3.0.3
 info:
-  title: Sme.MessengerServiceHost
-  version: '1.0'
+  title: semilimes API - OpenAPI 3.0
+  description: |-
+    This is semilimes API
+  termsOfService: https://www.semilimes.com/terms-and-privacy/#terms-of-service
+  contact: 
+    name: semilimes
+    url: https://www.semilimes.com
+    email: contact@semilimes.com
+  version: 1.0.0
+servers:
+  - url: https://api.semilimes.net
 paths:
-  /devapi/account/my:
+  /account/my:
     get:
       tags:
-        - Sme.MessengerServiceHost
+        - Account
       summary: GetMyAccountsRequest
-      description: >-
-        This endpoint lists all the user accounts somehow linked to the calling
-        user, including owned subaccounts and shared accounts.
+      description: This endpoint lists all the user accounts somehow linked to the calling user, including owned subaccounts and shared accounts.
       parameters:
         - name: Main
           in: query
@@ -32,12 +39,6 @@ paths:
           description: Include accounts' advanced properties.
           schema:
             type: boolean
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: OK
@@ -47,18 +48,9 @@ paths:
                 $ref: '#/components/schemas/GetMyAccountsResponse'
     post:
       tags:
-        - Sme.MessengerServiceHost
+        - Account
       summary: GetMyAccountsRequest
-      description: >-
-        This endpoint lists all the user accounts somehow linked to the calling
-        user, including owned subaccounts and shared accounts.
-      parameters:
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
+      description: This endpoint lists all the user accounts somehow linked to the calling user, including owned subaccounts and shared accounts.
       requestBody:
         content:
           application/json:
@@ -72,22 +64,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetMyAccountsResponse'
-  /devapi/account/profile:
+  /account/profile:
     get:
       tags:
-        - Sme.MessengerServiceHost
+        - Account
       summary: GetAccountProfileRequest
       description: Gets the account profile's configuration and content.
       parameters:
         - name: AccountId
           in: query
           description: If not specified, the current account's profile gets returned.
-          schema:
-            type: string
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
           schema:
             type: string
       responses:
@@ -99,16 +85,9 @@ paths:
                 $ref: '#/components/schemas/GetAccountProfileResponse'
     post:
       tags:
-        - Sme.MessengerServiceHost
+        - Account
       summary: GetAccountProfileRequest
       description: Gets the account profile's configuration and content.
-      parameters:
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
       requestBody:
         content:
           application/json:
@@ -122,10 +101,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetAccountProfileResponse'
-  /devapi/account/profile/update:
+  /account/profile/update:
     get:
       tags:
-        - Sme.MessengerServiceHost
+        - Account
       summary: UpdateAccountProfileRequest
       description: This endpoint lets the user update the specified profile.
       parameters:
@@ -157,12 +136,6 @@ paths:
           in: query
           schema:
             type: string
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: OK
@@ -172,16 +145,9 @@ paths:
                 $ref: '#/components/schemas/UpdateAccountProfileResponse'
     post:
       tags:
-        - Sme.MessengerServiceHost
+        - Account
       summary: UpdateAccountProfileRequest
       description: This endpoint lets the user update the specified profile.
-      parameters:
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
       requestBody:
         content:
           application/json:
@@ -195,14 +161,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UpdateAccountProfileResponse'
-  /devapi/account/feed:
+  /account/feed:
     get:
       tags:
-        - Sme.MessengerServiceHost
+        - Account
       summary: GetAccountFeedRequest
-      description: >-
-        Gets the account feed's configuration and content. Each post can only
-        contain a bucket component type.
+      description: Gets the account feed's configuration and content. Each post can only contain a bucket component type.
       parameters:
         - name: AccountId
           in: query
@@ -225,12 +189,6 @@ paths:
           schema:
             type: integer
             format: int32
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: OK
@@ -240,18 +198,9 @@ paths:
                 $ref: '#/components/schemas/GetAccountFeedResponse'
     post:
       tags:
-        - Sme.MessengerServiceHost
+        - Account
       summary: GetAccountFeedRequest
-      description: >-
-        Gets the account feed's configuration and content. Each post can only
-        contain a bucket component type.
-      parameters:
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
+      description: Gets the account feed's configuration and content. Each post can only contain a bucket component type.
       requestBody:
         content:
           application/json:
@@ -265,19 +214,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetAccountFeedResponse'
-  /devapi/account/feed/post/add:
+  /account/feed/post/add:
     post:
       tags:
-        - Sme.MessengerServiceHost
+        - Account
       summary: AddPostToAccountFeedRequest
       description: This endpoint allows the user to add a new post to the feed.
-      parameters:
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
       requestBody:
         content:
           application/json:
@@ -291,22 +233,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AddPostToAccountFeedResponse'
-  /devapi/account/feed/post/update:
+  /account/feed/post/update:
     post:
       tags:
-        - Sme.MessengerServiceHost
+        - Account
       summary: UpdatePostContentRequest
-      description: >-
-        This endpoint allows the user to access the content of a post (bucket)
-        and modify its content. The action is possible only if the user has the
-        right permissions to modify the bucket.
-      parameters:
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
+      description: This endpoint allows the user to access the content of a post (bucket) and modify its content. The action is possible only if the user has the right permissions to modify the bucket.
       requestBody:
         content:
           application/json:
@@ -320,19 +252,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UpdatePostContentResponse'
-  /devapi/account/contacts:
+  /account/contacts:
     get:
       tags:
-        - Sme.MessengerServiceHost
+        - Account
       summary: GetAccountContactsRequest
       description: Gets the account feed's configuration and content.
-      parameters:
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: OK
@@ -342,16 +267,9 @@ paths:
                 $ref: '#/components/schemas/GetAccountContactsResponse'
     post:
       tags:
-        - Sme.MessengerServiceHost
+        - Account
       summary: GetAccountContactsRequest
       description: Gets the account feed's configuration and content.
-      parameters:
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
       requestBody:
         content:
           application/json:
@@ -365,21 +283,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetAccountContactsResponse'
-  /devapi/communication/p2p:
+  /communication/p2p:
     get:
       tags:
-        - Sme.MessengerServiceHost
+        - Communication
       summary: GetP2PChatsRequest
       description: This endpoint retrieves the p2p chats of the calling user account.
       parameters:
         - name: RecipientId
           in: query
-          schema:
-            type: string
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
           schema:
             type: string
       responses:
@@ -391,16 +303,9 @@ paths:
                 $ref: '#/components/schemas/GetP2PChatsResponse'
     post:
       tags:
-        - Sme.MessengerServiceHost
+        - Communication
       summary: GetP2PChatsRequest
       description: This endpoint retrieves the p2p chats of the calling user account.
-      parameters:
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
       requestBody:
         content:
           application/json:
@@ -414,18 +319,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetP2PChatsResponse'
-  /devapi/communication/p2p/message:
+  /communication/p2p/message:
     get:
       tags:
-        - Sme.MessengerServiceHost
+        - Communication
       summary: GetP2pChatMessagesRequest
       description: This endpoint retrieves the p2p chats of the calling user account.
       parameters:
         - name: RecipientId
           in: query
-          description: >-
-            Filters the p2p chats list by showing only the one occurring with
-            the specified account id.
+          description: Filters the p2p chats list by showing only the one occurring with the specified account id.
           schema:
             type: string
         - name: MessageId
@@ -437,12 +340,6 @@ paths:
           schema:
             type: integer
             format: int32
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: OK
@@ -452,16 +349,9 @@ paths:
                 $ref: '#/components/schemas/GetP2pChatMessagesResponse'
     post:
       tags:
-        - Sme.MessengerServiceHost
+        - Communication
       summary: GetP2pChatMessagesRequest
       description: This endpoint retrieves the p2p chats of the calling user account.
-      parameters:
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
       requestBody:
         content:
           application/json:
@@ -475,21 +365,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetP2pChatMessagesResponse'
-  /devapi/communication/p2p/message/send:
+  /communication/p2p/message/send:
     post:
       tags:
-        - Sme.MessengerServiceHost
+        - Communication
       summary: SendToP2pChatRequest
-      description: >-
-        This endpoint allows to send a data component to a P2P Chat as a new
-        message.
-      parameters:
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
+      description: This endpoint allows to send a data component to a P2P Chat as a new message.
       requestBody:
         content:
           application/json:
@@ -503,21 +384,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SendToP2pChatResponse'
-  /devapi/communication/p2p/message/sendtest:
+  /communication/p2p/message/sendtest:
     post:
       tags:
-        - Sme.MessengerServiceHost
+        - Communication
       summary: SendToP2pChatTestRequest
-      description: >-
-        This endpoint allows to send a data component to a P2P Chat as a new
-        message.
-      parameters:
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
+      description: This endpoint allows to send a data component to a P2P Chat as a new message.
       requestBody:
         content:
           application/json:
@@ -531,19 +403,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SendToP2pChatTestResponse'
-  /devapi/communication/p2p/message/update:
+  /communication/p2p/message/update:
     post:
       tags:
-        - Sme.MessengerServiceHost
+        - Communication
       summary: UpdateP2pChatMessageRequest
       description: This endpoint allows to edit a previously sent message.
-      parameters:
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
       requestBody:
         content:
           application/json:
@@ -557,21 +422,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UpdateP2pChatMessageResponse'
-  /devapi/communication/p2p/message/reaction/send:
+  /communication/p2p/message/reaction/send:
     post:
       tags:
-        - Sme.MessengerServiceHost
+        - Communication
       summary: ReactP2pChatMessageRequest
-      description: >-
-        This endpoint allows the account to send a reaction to a specific
-        message in a P2P conversation.
-      parameters:
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
+      description: This endpoint allows the account to send a reaction to a specific message in a P2P conversation.
       requestBody:
         content:
           application/json:
@@ -585,21 +441,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ReactP2pChatMessageResponse'
-  /devapi/communication/p2p/message/reaction/remove:
+  /communication/p2p/message/reaction/remove:
     post:
       tags:
-        - Sme.MessengerServiceHost
+        - Communication
       summary: RemoveP2pChatMessageReactionRequest
-      description: >-
-        This endpoint allows the account to cancel a reaction from a specific
-        message in a P2P conversation.
-      parameters:
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
+      description: This endpoint allows the account to cancel a reaction from a specific message in a P2P conversation.
       requestBody:
         content:
           application/json:
@@ -613,21 +460,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ReactP2pChatMessageResponse'
-  /devapi/communication/p2p/message/reply:
+  /communication/p2p/message/reply:
     post:
       tags:
-        - Sme.MessengerServiceHost
+        - Communication
       summary: ReplyP2pChatMessageRequest
-      description: >-
-        This endpoint allows the account to reply to a specific message with a
-        simple text.
-      parameters:
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
+      description: This endpoint allows the account to reply to a specific message with a simple text.
       requestBody:
         content:
           application/json:
@@ -641,10 +479,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ReplyP2pChatMessageResponse'
-  /devapi/communication/groupchat:
+  /communication/groupchat:
     get:
       tags:
-        - Sme.MessengerServiceHost
+        - Communication
       summary: GetGroupChatsRequest
       description: This endpoint retrieves the p2p chats of the calling user account.
       parameters:
@@ -654,12 +492,6 @@ paths:
             type: array
             items:
               type: string
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: OK
@@ -669,16 +501,9 @@ paths:
                 $ref: '#/components/schemas/GetGroupChatsResponse'
     post:
       tags:
-        - Sme.MessengerServiceHost
+        - Communication
       summary: GetGroupChatsRequest
       description: This endpoint retrieves the p2p chats of the calling user account.
-      parameters:
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
       requestBody:
         content:
           application/json:
@@ -692,21 +517,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetGroupChatsResponse'
-  /devapi/communication/groupchat/create:
+  /communication/groupchat/create:
     post:
       tags:
-        - Sme.MessengerServiceHost
+        - Communication
       summary: CreateGroupChatRequest
-      description: >-
-        This endpoint creates a new group chat with a specified name. It's also
-        possible to directly invite other accounts to the chat upon creation.
-      parameters:
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
+      description: This endpoint creates a new group chat with a specified name. It's also possible to directly invite other accounts to the chat upon creation.
       requestBody:
         content:
           application/json:
@@ -720,10 +536,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreateGroupChatResponse'
-  /devapi/communication/groupchat/message:
+  /communication/groupchat/message:
     get:
       tags:
-        - Sme.MessengerServiceHost
+        - Communication
       summary: GetGroupChatMessagesRequest
       description: This endpoint returns a list of messages in the specified Group chat.
       parameters:
@@ -740,12 +556,6 @@ paths:
           schema:
             type: integer
             format: int32
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: OK
@@ -755,16 +565,9 @@ paths:
                 $ref: '#/components/schemas/GetGroupChatMessagesResponse'
     post:
       tags:
-        - Sme.MessengerServiceHost
+        - Communication
       summary: GetGroupChatMessagesRequest
       description: This endpoint returns a list of messages in the specified Group chat.
-      parameters:
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
       requestBody:
         content:
           application/json:
@@ -778,21 +581,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetGroupChatMessagesResponse'
-  /devapi/communication/groupchat/invite:
+  /communication/groupchat/invite:
     post:
       tags:
-        - Sme.MessengerServiceHost
+        - Communication
       summary: InviteToGroupChatRequest
-      description: >-
-        This endpoint allows to invite other recipients to the specified group
-        chat.
-      parameters:
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
+      description: This endpoint allows to invite other recipients to the specified group chat.
       requestBody:
         content:
           application/json:
@@ -806,21 +600,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InviteToGroupChatResponse'
-  /devapi/communication/groupchat/message/send:
+  /communication/groupchat/message/send:
     post:
       tags:
-        - Sme.MessengerServiceHost
+        - Communication
       summary: SendToGroupChatRequest
-      description: >-
-        This endpoint allows to send a data component to a Group Chat as a new
-        message, by specifying a conversation name.
-      parameters:
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
+      description: This endpoint allows to send a data component to a Group Chat as a new message, by specifying a conversation name.
       requestBody:
         content:
           application/json:
@@ -834,19 +619,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SendToGroupChatResponse'
-  /devapi/communication/groupchat/message/update:
+  /communication/groupchat/message/update:
     post:
       tags:
-        - Sme.MessengerServiceHost
+        - Communication
       summary: UpdateGroupChatMessageRequest
       description: This endpoint allows to edit a previously sent message.
-      parameters:
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
       requestBody:
         content:
           application/json:
@@ -860,21 +638,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UpdateGroupChatMessageResponse'
-  /devapi/communication/groupchat/message/reaction/send:
+  /communication/groupchat/message/reaction/send:
     post:
       tags:
-        - Sme.MessengerServiceHost
+        - Communication
       summary: ReactGroupChatMessageRequest
-      description: >-
-        This endpoint allows the account to send a reaction to a specific
-        message in a Group conversation.
-      parameters:
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
+      description: This endpoint allows the account to send a reaction to a specific message in a Group conversation.
       requestBody:
         content:
           application/json:
@@ -888,21 +657,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ReactGroupChatMessageResponse'
-  /devapi/communication/groupchat/message/reaction/remove:
+  /communication/groupchat/message/reaction/remove:
     post:
       tags:
-        - Sme.MessengerServiceHost
+        - Communication
       summary: RemoveGroupChatMessageReactionRequest
-      description: >-
-        This endpoint allows the account to cancel a reaction from a specific
-        message in a Group conversation.
-      parameters:
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
+      description: This endpoint allows the account to cancel a reaction from a specific message in a Group conversation.
       requestBody:
         content:
           application/json:
@@ -916,21 +676,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ReactGroupChatMessageResponse'
-  /devapi/communication/groupchat/message/reply:
+  /communication/groupchat/message/reply:
     post:
       tags:
-        - Sme.MessengerServiceHost
+        - Communication
       summary: ReplyGroupChatMessageRequest
-      description: >-
-        This endpoint allows the account to reply to a specific message with a
-        simple text.
-      parameters:
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
+      description: This endpoint allows the account to reply to a specific message with a simple text.
       requestBody:
         content:
           application/json:
@@ -944,14 +695,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ReplyGroupChatMessageResponse'
-  /devapi/communication/channel/my:
+  /communication/channel/my:
     get:
       tags:
-        - Sme.MessengerServiceHost
+        - Communication
       summary: GetMyChannelsRequest
-      description: >-
-        This endpoint retrieves the channel buckets the calling user account is
-        publisher or subscriber of.
+      description: This endpoint retrieves the channel buckets the calling user account is publisher or subscriber of.
       parameters:
         - name: Owner
           in: query
@@ -965,12 +714,6 @@ paths:
           in: query
           schema:
             type: boolean
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: OK
@@ -980,18 +723,9 @@ paths:
                 $ref: '#/components/schemas/GetMyChannelsResponse'
     post:
       tags:
-        - Sme.MessengerServiceHost
+        - Communication
       summary: GetMyChannelsRequest
-      description: >-
-        This endpoint retrieves the channel buckets the calling user account is
-        publisher or subscriber of.
-      parameters:
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
+      description: This endpoint retrieves the channel buckets the calling user account is publisher or subscriber of.
       requestBody:
         content:
           application/json:
@@ -1005,10 +739,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetMyChannelsResponse'
-  /devapi/communication/channel:
+  /communication/channel:
     get:
       tags:
-        - Sme.MessengerServiceHost
+        - Communication
       summary: GetChannelsRequest
       description: This endpoint finds channels based on specified parameters.
       parameters:
@@ -1028,12 +762,6 @@ paths:
           in: query
           schema:
             type: string
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: OK
@@ -1043,16 +771,9 @@ paths:
                 $ref: '#/components/schemas/GetChannelsResponse'
     post:
       tags:
-        - Sme.MessengerServiceHost
+        - Communication
       summary: GetChannelsRequest
       description: This endpoint finds channels based on specified parameters.
-      parameters:
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
       requestBody:
         content:
           application/json:
@@ -1066,10 +787,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetChannelsResponse'
-  /devapi/communication/channel/message:
+  /communication/channel/message:
     get:
       tags:
-        - Sme.MessengerServiceHost
+        - Communication
       summary: GetChannelMessagesRequest
       description: This endpoint returns a list of messages in the specified Channel chat.
       parameters:
@@ -1086,12 +807,6 @@ paths:
           schema:
             type: integer
             format: int32
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: OK
@@ -1101,16 +816,9 @@ paths:
                 $ref: '#/components/schemas/GetChannelMessagesResponse'
     post:
       tags:
-        - Sme.MessengerServiceHost
+        - Communication
       summary: GetChannelMessagesRequest
       description: This endpoint returns a list of messages in the specified Channel chat.
-      parameters:
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
       requestBody:
         content:
           application/json:
@@ -1124,22 +832,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetChannelMessagesResponse'
-  /devapi/communication/channel/create:
+  /communication/channel/create:
     post:
       tags:
-        - Sme.MessengerServiceHost
+        - Communication
       summary: CreateChannelRequest
-      description: >-
-        This endpoint allows to create a new channel and set the initial
-        publishers. The role of the current accountId will be automatically
-        publisher.
-      parameters:
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
+      description: This endpoint allows to create a new channel and set the initial publishers. The role of the current accountId will be automatically publisher.
       requestBody:
         content:
           application/json:
@@ -1153,21 +851,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreateChannelResponse'
-  /devapi/communication/channel/message/send:
+  /communication/channel/message/send:
     post:
       tags:
-        - Sme.MessengerServiceHost
+        - Communication
       summary: SendToChannelRequest
-      description: >-
-        This endpoint allows to send a data component to a Channel as a new
-        message, by specifying a conversation name.
-      parameters:
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
+      description: This endpoint allows to send a data component to a Channel as a new message, by specifying a conversation name.
       requestBody:
         content:
           application/json:
@@ -1181,21 +870,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SendToChannelResponse'
-  /devapi/communication/channel/subscribe:
+  /communication/channel/subscribe:
     post:
       tags:
-        - Sme.MessengerServiceHost
+        - Communication
       summary: SubscribeToChannelRequest
-      description: >-
-        This endpoint makes the calling account to subscribe to an existing
-        channel.
-      parameters:
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
+      description: This endpoint makes the calling account to subscribe to an existing channel.
       requestBody:
         content:
           application/json:
@@ -1209,21 +889,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SubscribeToChannelResponse'
-  /devapi/communication/channel/unsubscribe:
+  /communication/channel/unsubscribe:
     post:
       tags:
-        - Sme.MessengerServiceHost
+        - Communication
       summary: UnsubscribeToChannelRequest
-      description: >-
-        This endpoint makes the calling account to unsubscribe from an existing
-        channel.
-      parameters:
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
+      description: This endpoint makes the calling account to unsubscribe from an existing channel.
       requestBody:
         content:
           application/json:
@@ -1237,21 +908,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UnsubscribeToChannelResponse'
-  /devapi/communication/bucket:
+  /communication/bucket:
     get:
       tags:
-        - Sme.MessengerServiceHost
+        - Communication
       summary: OpenBucketRequest
       description: This endpoint let the user access the bucket content by its bucketId.
       parameters:
         - name: BucketId
           in: query
-          schema:
-            type: string
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
           schema:
             type: string
       responses:
@@ -1263,16 +928,9 @@ paths:
                 $ref: '#/components/schemas/OpenBucketResponse'
     post:
       tags:
-        - Sme.MessengerServiceHost
+        - Communication
       summary: OpenBucketRequest
       description: This endpoint let the user access the bucket content by its bucketId.
-      parameters:
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
       requestBody:
         content:
           application/json:
@@ -1286,21 +944,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OpenBucketResponse'
-  /devapi/communication/bucket/update:
+  /communication/bucket/update:
     post:
       tags:
-        - Sme.MessengerServiceHost
+        - Communication
       summary: UpdateBucketContentRequest
-      description: >-
-        This endpoint allows the user to update the content of a specific
-        bucket.
-      parameters:
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
+      description: This endpoint allows the user to update the content of a specific bucket.
       requestBody:
         content:
           application/json:
@@ -1314,21 +963,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UpdateBucketContentResponse'
-  /devapi/communication/bucket/like:
+  /communication/bucket/like:
     post:
       tags:
-        - Sme.MessengerServiceHost
+        - Communication
       summary: AddLikeToBucketRequest
-      description: >-
-        This endpoint sets a like by the current account to any referenced
-        bucket that allows likes.
-      parameters:
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
+      description: This endpoint sets a like by the current account to any referenced bucket that allows likes.
       requestBody:
         content:
           application/json:
@@ -1342,21 +982,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AddLikeToBucketResponse'
-  /devapi/communication/bucket/unlike:
+  /communication/bucket/unlike:
     post:
       tags:
-        - Sme.MessengerServiceHost
+        - Communication
       summary: RemoveLikeFromBucketRequest
-      description: >-
-        This endpoint unsets a like of the current account to any referenced
-        bucket that allows likes.
-      parameters:
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
+      description: This endpoint unsets a like of the current account to any referenced bucket that allows likes.
       requestBody:
         content:
           application/json:
@@ -1370,21 +1001,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RemoveLikeFromBucketResponse'
-  /devapi/service/tunnel/create:
+  /service/tunnel/create:
     post:
       tags:
-        - Sme.MessengerServiceHost
+        - Service
       summary: CreateTunnelRequest
-      description: >-
-        This endpoint requests a SSH tunnel creation between the server and the
-        calling client.
-      parameters:
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
+      description: This endpoint requests a SSH tunnel creation between the server and the calling client.
       requestBody:
         content:
           application/json:
@@ -1398,20 +1020,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreateTunnelResponse'
-  /devapi/service/tunnel/close:
+  /service/tunnel/close:
     post:
       tags:
-        - Sme.MessengerServiceHost
+        - Service
       summary: CloseTunnelRequest
       description: This endpoint shuts off a tunnel.
-      parameters:
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          style: simple
-          schema:
-            type: string
       requestBody:
         content:
           application/json:
@@ -1425,22 +1039,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CloseTunnelResponse'
-  /devapi/service/tunnel/open:
+  /service/tunnel/open:
     post:
       tags:
-        - Sme.MessengerServiceHost
+        - Service
       summary: OpenTunnelRequest
-      description: >-
-        This endpoint activates the tunnel and allocates a remote port on the
-        tunnel provider.
-      parameters:
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          style: simple
-          schema:
-            type: string
+      description: This endpoint activates the tunnel and allocates a remote port on the tunnel provider.
       requestBody:
         content:
           application/json:
@@ -1454,20 +1058,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OpenTunnelResponse'
-  /devapi/service/tunnel/delete:
+  /service/tunnel/delete:
     post:
       tags:
-        - Sme.MessengerServiceHost
+        - Service
       summary: DeleteTunnelRequest
       description: This endpoint deletes a tunnel on the tunnel provider.
-      parameters:
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          style: simple
-          schema:
-            type: string
       requestBody:
         content:
           application/json:
@@ -1481,31 +1077,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DeleteTunnelResponse'
-  /devapi/service/file/download:
+  /service/file/download:
     get:
       tags:
-        - Sme.MessengerServiceHost
+        - Service
       summary: DownloadFileRequest
-      description: >-
-        This endpoint makes the client download file content from the server,
-        based on the file id specified.
+      description: This endpoint makes the client download file content from the server, based on the file id specified.
       parameters:
         - name: FileId
           in: query
-          schema: 
+          schema:
             type: string
         - name: ThumbnailSize
           in: query
           schema:
             type: integer
             format: int32
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          style: simple
-          schema:
-            type: string
       responses:
         '200':
           description: OK
@@ -1514,18 +1101,9 @@ paths:
               schema: {}
     post:
       tags:
-        - Sme.MessengerServiceHost
+        - Service
       summary: DownloadFileRequest
-      description: >-
-        This endpoint makes the client download file content from the server,
-        based on the file id specified.
-      parameters:
-        - name: X-Account
-          in: header
-          description: Account Id provided by API Gateway!
-          required: true
-          schema:
-            type: string
+      description: This endpoint makes the client download file content from the server, based on the file id specified.
       requestBody:
         content:
           application/json:
@@ -1537,13 +1115,13 @@ paths:
           description: OK
           content:
             application/json:
-              schema: 
+              schema:
                 type: string
                 format: binary
-  /devapi/service/file/upload:
+  /service/file/upload:
     post:
       tags:
-        - UploadRequestHandler
+        - Service
       requestBody:
         content:
           multipart/form-data:
@@ -1564,21 +1142,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UploadFileResponse'
-  /CloudServer/wsclient:
+  /service/ws:
     get:
       tags:
-        - WebsocketRequestHandler
+        - Service
       responses:
         '200':
           description: Success
-  /devapi/service/ws:
-    get:
-      tags:
-        - WebsocketRequestHandler
-      responses:
-        '200':
-          description: Success
+security:
+  - bearerAuth: []
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: apikey
   schemas:
     Account:
       type: object
