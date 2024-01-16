@@ -2,7 +2,9 @@ openapi: 3.0.3
 info:
   title: semilimes API - OpenAPI 3.0
   description: |-
-    This is semilimes API
+    This is the semilimes OpenAPI3 schema for generating custom clients with the language of your preference
+    
+    🛑🛑🛑 **UNDER CONSTRUCTION** 🛑🛑🛑
   termsOfService: https://www.semilimes.com/terms-and-privacy/#terms-of-service
   contact: 
     name: semilimes
@@ -102,47 +104,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetAccountProfileResponse'
   /account/profile/update:
-    get:
-      tags:
-        - Account
-      summary: UpdateAccountProfileRequest
-      description: This endpoint lets the user update the specified profile.
-      parameters:
-        - name: Title
-          in: query
-          schema:
-            type: string
-        - name: Description
-          in: query
-          schema:
-            type: string
-        - name: Avatar
-          in: query
-          schema:
-            type: string
-        - name: Visible
-          in: query
-          schema:
-            type: boolean
-        - name: Locked
-          in: query
-          schema:
-            type: boolean
-        - name: EnableReactions
-          in: query
-          schema:
-            type: boolean
-        - name: PinWall
-          in: query
-          schema:
-            type: string
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UpdateAccountProfileResponse'
     post:
       tags:
         - Account
@@ -1182,18 +1143,6 @@ components:
         onlineStatus:
           type: string
           nullable: true
-        viewCount:
-          type: integer
-          format: int32
-          nullable: true
-        likeCount:
-          type: integer
-          format: int32
-          nullable: true
-        commentCount:
-          type: integer
-          format: int32
-          nullable: true
         lastSeen:
           type: integer
           format: int64
@@ -1335,18 +1284,6 @@ components:
         enableReactions:
           type: boolean
           nullable: true
-        viewCount:
-          type: integer
-          format: int32
-          nullable: true
-        likeCount:
-          type: integer
-          format: int32
-          nullable: true
-        commentCount:
-          type: integer
-          format: int32
-          nullable: true
         dataComponents:
           type: array
           items:
@@ -1358,11 +1295,12 @@ components:
       properties:
         dataComponentType:
           type: string
-          nullable: true
+          enum: 
+            - bucket
         bucketId:
           type: string
           format: uuid
-          nullable: true
+          nullable: false
       additionalProperties: false
     Channel:
       type: object
@@ -1552,11 +1490,158 @@ components:
       additionalProperties: false
     DataComponent:
       type: object
+      oneOf:
+        - $ref: '#/components/schemas/DCSimpleText'
+        - $ref: '#/components/schemas/DCHtmlText'
+        - $ref: '#/components/schemas/DCFile'
+        - $ref: '#/components/schemas/DCContact'
+        - $ref: '#/components/schemas/DCLocation'
+        - $ref: '#/components/schemas/DCWebView'
+        - $ref: '#/components/schemas/DCChannel'
+        - $ref: '#/components/schemas/DCTunnel'
+        - $ref: '#/components/schemas/DCForm'
+        - $ref: '#/components/schemas/Bucket'
+    DCSimpleText:
+      type: object
       properties:
         dataComponentType:
           type: string
-          nullable: true
-      additionalProperties: false
+          enum:
+            - text
+        text:
+          type: string
+    DCHtmlText:
+      type: object
+      properties:
+        dataComponentType:
+          type: string
+          enum:
+            - html
+        html:
+          type: string
+    DCFile:
+      type: object
+      properties:
+        dataComponentType:
+          type: string
+          enum:
+            - file
+        fileIds:
+          type: array
+          items:
+            type: string
+    DCContact:
+      type: object
+      properties:
+        dataComponentType:
+          type: string
+          enum:
+            - contact
+        contactIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+    DCLocation:
+      type: object
+      properties:
+        dataComponentType:
+          type: string
+          enum:
+            - location
+        locationName:
+          type: string
+        latitude:
+          type: number
+        longitude:
+          type: number
+    DCWebView:
+      type: object
+      properties:
+        dataComponentType:
+          type: string
+          enum:
+            - webview
+        url:
+          type: string
+        enableFullScreenView:
+          type: boolean
+        viewSize:
+          type: string
+          enum:
+            - 1:1
+            - 1:2
+            - 2:1
+            - 3:2
+    DCChannel:
+      type: object
+      properties:
+        dataComponentType:
+          type: string
+          enum:
+            - channel
+        channelId:
+          type: string
+          format: uuid
+    DCTunnel:
+      type: object
+      properties:
+        dataComponentType:
+          type: string
+          enum:
+            - tunnel
+        tunnelId:
+          type: string
+          format: uuid
+    DCForm:
+      type: object
+      properties:
+        dataComponentType:
+          type: string
+          enum:
+            - form
+        submitEnabled:
+          type: boolean
+        retainStatus:
+          type: boolean
+        submitText:
+          type: string
+        receiver:
+          type: object
+          properties:
+            id: 
+              type: string
+            featureType:
+              type: string
+              enum:
+                - contact
+                - groupchat
+                - channel
+        refName: 
+          type: string
+        formComponents:
+          type: array
+          items:
+            $ref: '#/components/schemas/FormComponent'
+    DCFormSubmission:
+      type: object
+      properties:
+        dataComponentType:
+          type: string
+          enum:
+            - formsubmission
+        replyTo:
+          type: object
+          properties:
+            messageId: 
+              type: string
+              format: uuid
+            refName:
+              type: string
+        formComponents:
+          type: array
+          items:
+            $ref: '#/components/schemas/FormComponent'
     DeleteTunnelRequest:
       type: object
       properties:
@@ -1616,6 +1701,378 @@ components:
             $ref: '#/components/schemas/Post'
           nullable: true
       additionalProperties: false
+    FCLabel: 
+      type: object
+      properties:
+        refName:
+          type: string
+        formComponentType:
+          type: string
+          enum:
+            - label
+        title: 
+          type: string
+    FCTextBox: 
+      type: object
+      properties:
+        refName:
+          type: string
+        formComponentType:
+          type: string
+          enum:
+            - textbox
+        title: 
+          type: string
+        requiredSelection:
+          type: boolean
+        value: 
+          type: string
+          nullable: true
+    FCButtonList: 
+      type: object
+      properties:
+        refName:
+          type: string
+        formComponentType:
+          type: string
+          enum:
+            - buttonlist
+        title: 
+          type: string
+        requiredSelection:
+          type: boolean
+        value: 
+          type: string
+          nullable: true
+        verticalList:
+          type: boolean
+        options:
+          type: array
+          items:
+            type: object
+            properties:
+              name: 
+                type: string
+              value:
+                type: string
+    FCSingleChoice: 
+      type: object
+      properties:
+        refName:
+          type: string
+        formComponentType:
+          type: string
+          enum:
+            - singlechoice
+        title: 
+          type: string
+        requiredSelection:
+          type: boolean
+        value: 
+          type: string
+          nullable: true
+        options:
+          type: array
+          items:
+            type: object
+            properties:
+              name: 
+                type: string
+              value:
+                type: string
+    FCMultiChoice: 
+      type: object
+      properties:
+        refName:
+          type: string
+        formComponentType:
+          type: string
+          enum:
+            - multichoice
+        title: 
+          type: string
+        requiredSelection:
+          type: boolean
+        value: 
+          type: array
+          items:
+            type: string
+          nullable: true
+        options:
+          type: array
+          items:
+            type: object
+            properties:
+              name: 
+                type: string
+              value:
+                type: string
+    FCSwitch: 
+      type: object
+      properties:
+        refName:
+          type: string
+        formComponentType:
+          type: string
+          enum:
+            - switch
+        title: 
+          type: string
+        value: 
+          type: boolean
+          nullable: true
+    FCSlider: 
+      type: object
+      properties:
+        refName:
+          type: string
+        formComponentType:
+          type: string
+          enum:
+            - slider
+        title: 
+          type: string
+        requiredSelection:
+          type: boolean
+        value: 
+          type: integer
+          nullable: true
+        min: 
+          type: integer
+        max:
+          type: integer
+        step:
+          type: integer
+    FCDatePicker: 
+      type: object
+      properties:
+        refName:
+          type: string
+        formComponentType:
+          type: string
+          enum:
+            - datepicker
+        title: 
+          type: string
+        requiredSelection:
+          type: boolean
+        value: 
+          type: string
+          nullable: true
+        actionButtonTitle:
+          type: string
+    FCTimePicker: 
+      type: object
+      properties:
+        refName:
+          type: string
+        formComponentType:
+          type: string
+          enum:
+            - timepicker
+        title: 
+          type: string
+        requiredSelection:
+          type: boolean
+        value: 
+          type: string
+          nullable: true
+        actionButtonTitle:
+          type: string
+    FCLocationPicker: 
+      type: object
+      properties:
+        refName:
+          type: string
+        formComponentType:
+          type: string
+          enum:
+            - locationpicker
+        title: 
+          type: string
+        requiredSelection:
+          type: boolean
+        value: 
+          type: string
+          nullable: true
+        actionButtonTitle:
+          type: string
+        currentLocationOnly:
+          type: boolean
+    FCPhotoPicker: 
+      type: object
+      properties:
+        refName:
+          type: string
+        formComponentType:
+          type: string
+          enum:
+            - photopicker
+        title: 
+          type: string
+        requiredSelection:
+          type: boolean
+        value: 
+          type: object
+          properties:
+            fileType: 
+              type: string
+            fileId:
+              type: string
+              format: uuid
+            fileName:
+              type: string
+            fileSize:
+              type: integer
+          nullable: true
+        actionButtonTitle:
+          type: string
+        multiSelection:
+          type: boolean
+    FCFilePicker: 
+      type: object
+      properties:
+        refName:
+          type: string
+        formComponentType:
+          type: string
+          enum:
+            - filepicker
+        title: 
+          type: string
+        requiredSelection:
+          type: boolean
+        value: 
+          type: object
+          properties:
+            fileType: 
+              type: string
+            fileId:
+              type: string
+              format: uuid
+            fileName:
+              type: string
+            fileSize:
+              type: integer
+          nullable: true
+        actionButtonTitle:
+          type: string
+        multiSelection:
+          type: boolean
+    FCContactPicker: 
+      type: object
+      properties:
+        refName:
+          type: string
+        formComponentType:
+          type: string
+          enum:
+            - contactpicker
+        title: 
+          type: string
+        requiredSelection:
+          type: boolean
+        value: 
+          type: array
+          items:
+            type: string
+            format: uuid
+          nullable: true
+        actionButtonTitle:
+          type: string
+        multiSelection:
+          type: boolean
+    FCBucketPicker: 
+      type: object
+      properties:
+        refName:
+          type: string
+        formComponentType:
+          type: string
+          enum:
+            - bucketpicker
+        title: 
+          type: string
+        requiredSelection:
+          type: boolean
+        value: 
+          type: array
+          items:
+            type: object
+            properties:
+              id: 
+                type: string
+                format: uuid
+              featureType:
+                type: string
+                enum:
+                  - groupchat
+                  - channel
+          nullable: true
+        filter:
+          type: object
+          properties:
+            types:
+              type: array
+              items:
+                type: string
+                enum:
+                  - post
+                  - profile
+                  - groupchat
+                  - channel
+        actionButtonTitle:
+          type: string
+        multiSelection:
+          type: boolean
+    FCHiddenValue: 
+      type: object
+      properties:
+        refName:
+          type: string
+        formComponentType:
+          type: string
+          enum:
+            - hiddenvalue
+        value:
+          type: string
+          nullable: true
+    FCQrCodeScanner: 
+      type: object
+      properties:
+        refName:
+          type: string
+        formComponentType:
+          type: string
+          enum:
+            - qrcodescanner
+        title: 
+          type: string
+        requiredSelection:
+          type: boolean
+        value:
+          type: string
+          nullable: true
+        actionButtonTitle:
+          type: string
+    FCNfcReader: 
+      type: object
+      properties:
+        refName:
+          type: string
+        formComponentType:
+          type: string
+          enum:
+            - nfcreader
+        title: 
+          type: string
+        requiredSelection:
+          type: boolean
+        value:
+          type: string
+          nullable: true
+        actionButtonTitle:
+          type: string
     FileInfo:
       type: object
       properties:
@@ -1631,6 +2088,26 @@ components:
           format: int64
           nullable: true
       additionalProperties: false
+    FormComponent:
+      type: object
+      oneOf:
+        - $ref: '#/components/schemas/FCLabel'
+        - $ref: '#/components/schemas/FCTextBox'
+        - $ref: '#/components/schemas/FCButtonList'
+        - $ref: '#/components/schemas/FCSingleChoice'
+        - $ref: '#/components/schemas/FCMultiChoice'
+        - $ref: '#/components/schemas/FCSwitch'
+        - $ref: '#/components/schemas/FCSlider'
+        - $ref: '#/components/schemas/FCDatePicker'
+        - $ref: '#/components/schemas/FCTimePicker'
+        - $ref: '#/components/schemas/FCLocationPicker'
+        - $ref: '#/components/schemas/FCPhotoPicker'
+        - $ref: '#/components/schemas/FCFilePicker'
+        - $ref: '#/components/schemas/FCContactPicker'
+        - $ref: '#/components/schemas/FCBucketPicker'
+        - $ref: '#/components/schemas/FCHiddenValue'
+        - $ref: '#/components/schemas/FCQrCodeScanner'
+        - $ref: '#/components/schemas/FCNfcReader'
     GetAccountContactsRequest:
       type: object
       additionalProperties: false
