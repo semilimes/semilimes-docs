@@ -507,13 +507,14 @@ paths:
     get:
       tags:
         - Communication
-      summary: GetGroupChatsRequest
-      description: This endpoint retrieves the p2p chats of the calling user account.
+      summary: Get Group Chats
+      description: This endpoint retrieves the group chats of the calling user account.
       parameters:
-        - name: RecipientIds
+        - name: recipientIds[]
           in: query
           schema:
             type: array
+            format: uuid
             items:
               type: string
       responses:
@@ -523,11 +524,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetGroupChatsResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'                
     post:
       tags:
         - Communication
-      summary: GetGroupChatsRequest
-      description: This endpoint retrieves the p2p chats of the calling user account.
+      summary: Get Group Chats
+      description: This endpoint retrieves the group chats of the calling user account.
       requestBody:
         content:
           application/json:
@@ -541,12 +546,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetGroupChatsResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'                  
   /communication/groupchat/create:
     post:
       tags:
         - Communication
-      summary: CreateGroupChatRequest
-      description: This endpoint creates a new group chat with a specified name. It's also possible to directly invite other accounts to the chat upon creation.
+      summary: Create Group Chat
+      description: >
+        This endpoint creates a new group chat with a specified name. It's also possible to directly invite other accounts to the chat upon creation by specifying their accountIds in the `recipientIds` array.
       requestBody:
         content:
           application/json:
@@ -560,21 +570,28 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreateGroupChatResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'                
   /communication/groupchat/message:
     get:
       tags:
         - Communication
-      summary: GetGroupChatMessagesRequest
+      summary: Get Group Chat Messages
       description: This endpoint returns a list of messages in the specified Group chat.
       parameters:
-        - name: GroupChatId
+        - name: groupChatId
+          in: query
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: messageId
           in: query
           schema:
             type: string
-        - name: MessageId
-          in: query
-          schema:
-            type: string
+            format: uuid
         - name: Limit
           in: query
           schema:
@@ -587,10 +604,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetGroupChatMessagesResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'                
     post:
       tags:
         - Communication
-      summary: GetGroupChatMessagesRequest
+      summary: Get Group Chat Messages
       description: This endpoint returns a list of messages in the specified Group chat.
       requestBody:
         content:
@@ -605,11 +626,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetGroupChatMessagesResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'                
   /communication/groupchat/invite:
     post:
       tags:
         - Communication
-      summary: InviteToGroupChatRequest
+      summary: Invite To Group Chat
       description: This endpoint allows to invite other recipients to the specified group chat.
       requestBody:
         content:
@@ -624,12 +649,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InviteToGroupChatResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'                  
   /communication/groupchat/message/send:
     post:
       tags:
         - Communication
-      summary: SendToGroupChatRequest
-      description: This endpoint allows to send a data component to a Group Chat as a new message, by specifying a conversation name.
+      summary: Send Message To Group Chat
+      description: This endpoint allows to send a data component to a Group Chat as a new message.
       requestBody:
         content:
           application/json:
@@ -643,11 +672,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SendToGroupChatResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'                 
   /communication/groupchat/message/update:
     post:
       tags:
         - Communication
-      summary: UpdateGroupChatMessageRequest
+      summary: Update Group Chat Message
       description: This endpoint allows to edit a previously sent message.
       requestBody:
         content:
@@ -662,11 +695,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UpdateGroupChatMessageResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'                 
   /communication/groupchat/message/reaction/send:
     post:
       tags:
         - Communication
-      summary: ReactGroupChatMessageRequest
+      summary: React To Group Chat Message
       description: This endpoint allows the account to send a reaction to a specific message in a Group conversation.
       requestBody:
         content:
@@ -681,12 +718,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ReactGroupChatMessageResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'                
   /communication/groupchat/message/reaction/remove:
     post:
       tags:
         - Communication
       summary: RemoveGroupChatMessageReactionRequest
-      description: This endpoint allows the account to cancel a reaction from a specific message in a Group conversation.
+      description: This endpoint allows the account to remove a reaction from a specific message in a Group Chat.
       requestBody:
         content:
           application/json:
@@ -699,12 +740,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ReactGroupChatMessageResponse'
+                $ref: '#/components/schemas/RemoveGroupChatMessageReactionResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'                
   /communication/groupchat/message/reply:
     post:
       tags:
         - Communication
-      summary: ReplyGroupChatMessageRequest
+      summary: Reply To Group Chat Message
       description: This endpoint allows the account to reply to a specific message with a simple text.
       requestBody:
         content:
@@ -719,6 +764,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ReplyGroupChatMessageResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'                
   /communication/channel/my:
     get:
       tags:
@@ -1504,16 +1553,17 @@ components:
       additionalProperties: false
     CreateGroupChatRequest:
       type: object
+      required:
+        - title
+        - recipientIds
       properties:
         title:
           type: string
-          nullable: true
         recipientIds:
           type: array
           items:
             type: string
             format: uuid
-          nullable: true
       additionalProperties: false
     CreateGroupChatResponse:
       type: object
@@ -2359,11 +2409,12 @@ components:
       additionalProperties: false
     GetGroupChatMessagesRequest:
       type: object
+      required:
+        - groupChatId
       properties:
         groupChatId:
           type: string
           format: uuid
-          nullable: true
         messageId:
           type: string
           format: uuid
@@ -2578,7 +2629,6 @@ components:
         groupChatId:
           type: string
           format: uuid
-          nullable: true
         title:
           type: string
           nullable: true
@@ -2591,17 +2641,18 @@ components:
       additionalProperties: false
     InviteToGroupChatRequest:
       type: object
+      required:
+        - groupChatId
+        - recipientIds
       properties:
         groupChatId:
           type: string
           format: uuid
-          nullable: true
         recipientIds:
           type: array
           items:
             type: string
             format: uuid
-          nullable: true
       additionalProperties: false
     InviteToGroupChatResponse:
       type: object
@@ -2624,7 +2675,6 @@ components:
         groupChatId:
           type: string
           format: uuid
-          nullable: true
         invitedRecipientIds:
           type: array
           items:
@@ -2801,14 +2851,15 @@ components:
       additionalProperties: false
     ReactGroupChatMessageRequest:
       type: object
+      required:
+        - messageId
+        - reaction
       properties:
         messageId:
           type: string
           format: uuid
-          nullable: true
         reaction:
           type: string
-          nullable: true
       additionalProperties: false
     ReactGroupChatMessageResponse:
       type: object
@@ -2897,12 +2948,38 @@ components:
       additionalProperties: false
     RemoveGroupChatMessageReactionRequest:
       type: object
+      required:
+        - messageId
+        - reaction
       properties:
         messageId:
           type: string
           format: uuid
-          nullable: true
         reaction:
+          type: string
+      additionalProperties: false
+    RemoveGroupChatMessageReactionResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        statusCode:
+          type: integer
+          format: int32
+          nullable: true
+        error:
+          type: string
+          nullable: true
+        data:
+          $ref: '#/components/schemas/RemoveGroupChatMessageReactionResponseData'
+      additionalProperties: false
+    RemoveGroupChatMessageReactionResponseData:
+      type: object
+      properties:
+        messageId:
+          type: string
+          format: uuid
+        removedReaction:
           type: string
           nullable: true
       additionalProperties: false
@@ -2951,15 +3028,15 @@ components:
       additionalProperties: false
     ReplyGroupChatMessageRequest:
       type: object
+      required:
+        - messageId
+        - dataComponent
       properties:
         messageId:
           type: string
           format: uuid
-          nullable: true
         dataComponent:
-          type: object
-          additionalProperties: {}
-          nullable: true
+          $ref: '#/components/schemas/DCSimpleText'
       additionalProperties: false
     ReplyGroupChatMessageResponse:
       type: object
@@ -2984,7 +3061,7 @@ components:
           format: uuid
           nullable: true
         sentReply:
-          $ref: '#/components/schemas/Message'
+          $ref: '#/components/schemas/ReplyMessage'
       additionalProperties: false
     ReplyMessage:
       type: object
@@ -3001,15 +3078,6 @@ components:
         updatedOn:
           type: integer
           format: int64
-          nullable: true
-        messageReactions:
-          type: object
-          additionalProperties:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-              format: uuid
           nullable: true
         dataComponent:
           $ref: '#/components/schemas/DCSimpleText'
@@ -3086,15 +3154,16 @@ components:
       additionalProperties: false
     SendToGroupChatRequest:
       type: object
+      required: 
+        - groupChatId
+        - dataComponent
       properties:
         groupChatId:
           type: string
           format: uuid
           nullable: true
         dataComponent:
-          type: object
-          additionalProperties: {}
-          nullable: true
+          $ref: '#/components/schemas/DataComponent'
       additionalProperties: false
     SendToGroupChatResponse:
       type: object
@@ -3117,7 +3186,6 @@ components:
         groupChatId:
           type: string
           format: uuid
-          nullable: true
         sentMessage:
           $ref: '#/components/schemas/Message'
       additionalProperties: false
@@ -3325,15 +3393,15 @@ components:
       additionalProperties: false
     UpdateGroupChatMessageRequest:
       type: object
+      required:
+        - messageId
+        - dataComponent
       properties:
         messageId:
           type: string
           format: uuid
-          nullable: true
         dataComponent:
-          type: object
-          additionalProperties: {}
-          nullable: true
+          $ref: '#/components/schemas/DataComponent'
       additionalProperties: false
     UpdateGroupChatMessageResponse:
       type: object
