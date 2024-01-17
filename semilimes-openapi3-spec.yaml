@@ -70,6 +70,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetMyAccountsResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
   /account/profile:
     get:
       tags:
@@ -199,6 +203,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetAccountFeedResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
   /account/feed/post/add:
     post:
       tags:
@@ -280,17 +288,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetAccountContactsResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
   /communication/p2p:
     get:
       tags:
         - Communication
-      summary: GetP2PChatsRequest
+      summary: Get P2P Chats
       description: This endpoint retrieves the p2p chats of the calling user account.
-      parameters:
-        - name: RecipientId
-          in: query
-          schema:
-            type: string
       responses:
         '200':
           description: OK
@@ -301,7 +308,7 @@ paths:
     post:
       tags:
         - Communication
-      summary: GetP2PChatsRequest
+      summary: Get P2P Chats
       description: This endpoint retrieves the p2p chats of the calling user account.
       requestBody:
         content:
