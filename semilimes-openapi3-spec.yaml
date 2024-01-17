@@ -18,25 +18,25 @@ paths:
     get:
       tags:
         - Account
-      summary: GetMyAccountsRequest
+      summary: Get My Accounts
       description: This endpoint lists all the user accounts somehow linked to the calling user, including owned subaccounts and shared accounts.
       parameters:
-        - name: Main
+        - name: main
           in: query
           description: Include the main/login account.
           schema:
             type: boolean
-        - name: Sub
+        - name: sub
           in: query
           description: Include sub accounts.
           schema:
             type: boolean
-        - name: Shared
+        - name: shared
           in: query
           description: Include accounts shared by other users.
           schema:
             type: boolean
-        - name: Details
+        - name: details
           in: query
           description: Include accounts' advanced properties.
           schema:
@@ -48,10 +48,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetMyAccountsResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
     post:
       tags:
         - Account
-      summary: GetMyAccountsRequest
+      summary: Get My Accounts
       description: This endpoint lists all the user accounts somehow linked to the calling user, including owned subaccounts and shared accounts.
       requestBody:
         content:
@@ -70,10 +74,10 @@ paths:
     get:
       tags:
         - Account
-      summary: GetAccountProfileRequest
+      summary: Get Account Profile
       description: Gets the account profile's configuration and content.
       parameters:
-        - name: AccountId
+        - name: accountId
           in: query
           description: If not specified, the current account's profile gets returned.
           schema:
@@ -85,10 +89,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetAccountProfileResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
     post:
       tags:
         - Account
-      summary: GetAccountProfileRequest
+      summary: Get Account Profile
       description: Gets the account profile's configuration and content.
       requestBody:
         content:
@@ -103,11 +111,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetAccountProfileResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'                
   /account/profile/update:
     post:
       tags:
         - Account
-      summary: UpdateAccountProfileRequest
+      summary: Update Account Profile
       description: This endpoint lets the user update the specified profile.
       requestBody:
         content:
@@ -122,34 +134,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UpdateAccountProfileResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'                
   /account/feed:
     get:
       tags:
         - Account
-      summary: GetAccountFeedRequest
+      summary: Get Account Feed
       description: Gets the account feed's configuration and content. Each post can only contain a bucket component type.
       parameters:
-        - name: AccountId
+        - name: accountId
           in: query
           description: If not specified, the current account's feed gets returned.
           schema:
             type: string
-        - name: Before
+            format: uuid
+        - name: before
           in: query
-          description: Get feed's content published before this date.
+          description: Get feed's content published before this date (unix timestamp).
           schema:
-            type: string
-        - name: After
+            type: integer
+            format: int64
+        - name: after
           in: query
-          description: Get feed's posts published before this date.
+          description: Get feed's posts published before this date (unix timestamp).
           schema:
-            type: string
-        - name: Limit
+            type: integer
+            format: int64
+        - name: limit
           in: query
           description: Maximum number of posts returned.
           schema:
             type: integer
             format: int32
+            minimum: 0
       responses:
         '200':
           description: OK
@@ -157,10 +177,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetAccountFeedResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
     post:
       tags:
         - Account
-      summary: GetAccountFeedRequest
+      summary: Get Account Feed
       description: Gets the account feed's configuration and content. Each post can only contain a bucket component type.
       requestBody:
         content:
@@ -179,7 +203,7 @@ paths:
     post:
       tags:
         - Account
-      summary: AddPostToAccountFeedRequest
+      summary: Add Post To Account Feed
       description: This endpoint allows the user to add a new post to the feed.
       requestBody:
         content:
@@ -194,11 +218,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AddPostToAccountFeedResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
   /account/feed/post/update:
     post:
       tags:
         - Account
-      summary: UpdatePostContentRequest
+      summary: Update Post Content
       description: This endpoint allows the user to access the content of a post (bucket) and modify its content. The action is possible only if the user has the right permissions to modify the bucket.
       requestBody:
         content:
@@ -213,12 +241,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UpdatePostContentResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
   /account/contacts:
     get:
       tags:
         - Account
-      summary: GetAccountContactsRequest
-      description: Gets the account feed's configuration and content.
+      summary: Get Account Contacts
+      description: This endpoint allows to retrieve all the current account contacts
       responses:
         '200':
           description: OK
@@ -226,11 +258,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetAccountContactsResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
     post:
       tags:
         - Account
-      summary: GetAccountContactsRequest
-      description: Gets the account feed's configuration and content.
+      summary: Get Account Contacts
+      description: This endpoint allows to retrieve all the current account contacts
       requestBody:
         content:
           application/json:
@@ -1113,6 +1149,11 @@ paths:
 security:
   - bearerAuth: []
 components:
+  responses:
+    Unauthorized:
+      description: Unauthorized - Invalid API Key
+    PaymentRequired:
+      description: Payment Required - API Key out of credit
   securitySchemes:
     bearerAuth:
       type: http
@@ -1126,22 +1167,15 @@ components:
           type: string
           format: uuid
           nullable: true
-        ownerAccountId:
-          type: string
-          format: uuid
-          nullable: true
         semilimesId:
           type: string
           nullable: true
         accountName:
           type: string
           nullable: true
-        parentAccountId:
+        ownerAccountId:
           type: string
           format: uuid
-          nullable: true
-        onlineStatus:
-          type: string
           nullable: true
         lastSeen:
           type: integer
@@ -1154,6 +1188,33 @@ components:
         createdAt:
           type: integer
           format: int64
+          nullable: true
+        parentAccountId:
+          type: string
+          format: uuid
+          nullable: true
+        accessRole:
+          type: string
+          enum:
+            - Owner
+            - Admin
+            - Editor
+            - Viewer
+          nullable: true
+        viewCount: 
+          type: integer
+          nullable: true
+        likeCount:
+          type: integer
+          nullable: true
+        commentCount:
+          type: integer
+          nullable: true
+        onlineStatus:
+          type: string
+          enum:
+            - Online
+            - Offline
           nullable: true
       additionalProperties: false
     AddLikeToBucketRequest:
@@ -1215,8 +1276,7 @@ components:
         dataComponents:
           type: array
           items:
-            type: object
-            additionalProperties: {}
+            $ref: '#/components/schemas/DataComponent'
           nullable: true
       additionalProperties: false
     AddPostToAccountFeedResponse:
@@ -1240,11 +1300,9 @@ components:
         feedId:
           type: string
           format: uuid
-          nullable: true
         accountId:
           type: string
           format: uuid
-          nullable: true
         addedPost:
           $ref: '#/components/schemas/Post'
       additionalProperties: false
@@ -1254,22 +1312,27 @@ components:
         bucketId:
           type: string
           format: uuid
+        dataComponentType:
+          type: string
+          enum:
+            - bucket
+        title:
+          type: string
+          nullable: true            
+        description:
+          type: string
           nullable: true
         ownerId:
           type: string
           format: uuid
-          nullable: true
-        dataComponentType:
-          type: string
-          nullable: true
-        title:
-          type: string
-          nullable: true
-        description:
-          type: string
-          nullable: true
+          nullable: true          
         role:
           type: string
+          enum: 
+            - Owner
+            - Admin
+            - Editor
+            - Viewer
           nullable: true
         avatar:
           type: string
@@ -1300,7 +1363,6 @@ components:
         bucketId:
           type: string
           format: uuid
-          nullable: false
       additionalProperties: false
     Channel:
       type: object
@@ -1363,13 +1425,15 @@ components:
         accountId:
           type: string
           format: uuid
-          nullable: true
         accountName:
           type: string
           nullable: true
         contactStatus:
           type: string
-          nullable: true
+          enum:
+            - CONFIRMED
+            - INVITED
+            - WAITING
       additionalProperties: false
     CreateChannelRequest:
       type: object
@@ -1489,7 +1553,6 @@ components:
           nullable: true
       additionalProperties: false
     DataComponent:
-      type: object
       oneOf:
         - $ref: '#/components/schemas/DCSimpleText'
         - $ref: '#/components/schemas/DCHtmlText'
@@ -1500,7 +1563,7 @@ components:
         - $ref: '#/components/schemas/DCChannel'
         - $ref: '#/components/schemas/DCTunnel'
         - $ref: '#/components/schemas/DCForm'
-        - $ref: '#/components/schemas/Bucket'
+        - $ref: '#/components/schemas/BucketReference'
     DCSimpleText:
       type: object
       properties:
@@ -1680,14 +1743,13 @@ components:
         feedId:
           type: string
           format: uuid
-          nullable: true
         accountId:
           type: string
           format: uuid
-          nullable: true
         featureType:
           type: string
-          nullable: true
+          enum:
+            - feed
         title:
           type: string
           nullable: true
@@ -2687,10 +2749,10 @@ components:
         profileId:
           type: string
           format: uuid
-          nullable: true
         featureType:
           type: string
-          nullable: true
+          enum:
+            - profile
         title:
           type: string
           nullable: true
@@ -2709,18 +2771,6 @@ components:
           nullable: true
         enableReactions:
           type: boolean
-          nullable: true
-        viewCount:
-          type: integer
-          format: int32
-          nullable: true
-        likeCount:
-          type: integer
-          format: int32
-          nullable: true
-        commentCount:
-          type: integer
-          format: int32
           nullable: true
         pinWall:
           type: array
@@ -3158,29 +3208,22 @@ components:
       properties:
         title:
           type: string
-          nullable: true
         description:
           type: string
           nullable: true
         avatar:
           type: string
           format: uuid
-          nullable: true
         visible:
           type: boolean
-          nullable: true
         locked:
           type: boolean
-          nullable: true
         enableReactions:
           type: boolean
-          nullable: true
         pinWall:
           type: array
           items:
-            type: object
-            additionalProperties: {}
-          nullable: true
+            $ref: '#/components/schemas/DataComponent'
       additionalProperties: false
     UpdateAccountProfileResponse:
       type: object
@@ -3195,7 +3238,13 @@ components:
           type: string
           nullable: true
         data:
-          $ref: '#/components/schemas/Profile'
+          type: object
+          properties:
+            accountId: 
+              type: string
+              format: uuid
+            updatedProfile:
+              $ref: '#/components/schemas/Profile'
       additionalProperties: false
     UpdateBucketContentRequest:
       type: object
@@ -3327,7 +3376,6 @@ components:
         bucketId:
           type: string
           format: uuid
-          nullable: true
         title:
           type: string
           nullable: true
@@ -3350,8 +3398,7 @@ components:
         dataComponents:
           type: array
           items:
-            type: object
-            additionalProperties: {}
+            $ref: '#/components/schemas/DataComponent'
           nullable: true
       additionalProperties: false
     UpdatePostContentResponse:
