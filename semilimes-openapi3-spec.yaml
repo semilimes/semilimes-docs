@@ -305,6 +305,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetP2PChatsResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
     post:
       tags:
         - Communication
@@ -323,23 +327,30 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetP2PChatsResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
   /communication/p2p/message:
     get:
       tags:
         - Communication
-      summary: GetP2pChatMessagesRequest
-      description: This endpoint retrieves the p2p chats of the calling user account.
+      summary: Get P2P Chat Messages
+      description: This endpoint returns a list of messages in the specified P2P chat
       parameters:
-        - name: RecipientId
+        - name: recipientId
           in: query
+          required: true
           description: Filters the p2p chats list by showing only the one occurring with the specified account id.
           schema:
             type: string
-        - name: MessageId
+            format: uuid
+        - name: messageId
           in: query
           schema:
             type: string
-        - name: Limit
+            format: uuid
+        - name: limit
           in: query
           schema:
             type: integer
@@ -351,11 +362,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetP2pChatMessagesResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
     post:
       tags:
         - Communication
-      summary: GetP2pChatMessagesRequest
-      description: This endpoint retrieves the p2p chats of the calling user account.
+      summary: Get P2P Chat Messages
+      description: This endpoint returns a list of messages in the specified P2P chat
       requestBody:
         content:
           application/json:
@@ -369,11 +384,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetP2pChatMessagesResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
   /communication/p2p/message/send:
     post:
       tags:
         - Communication
-      summary: SendToP2pChatRequest
+      summary: Send Message To P2P Chat
       description: This endpoint allows to send a data component to a P2P Chat as a new message.
       requestBody:
         content:
@@ -388,30 +407,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SendToP2pChatResponse'
-  /communication/p2p/message/sendtest:
-    post:
-      tags:
-        - Communication
-      summary: SendToP2pChatTestRequest
-      description: This endpoint allows to send a data component to a P2P Chat as a new message.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SendToP2pChatTestRequest'
-        required: true
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SendToP2pChatTestResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
   /communication/p2p/message/update:
     post:
       tags:
         - Communication
-      summary: UpdateP2pChatMessageRequest
+      summary: Update P2P Chat Message
       description: This endpoint allows to edit a previously sent message.
       requestBody:
         content:
@@ -426,11 +430,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UpdateP2pChatMessageResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
   /communication/p2p/message/reaction/send:
     post:
       tags:
         - Communication
-      summary: ReactP2pChatMessageRequest
+      summary: React To P2P Chat Message
       description: This endpoint allows the account to send a reaction to a specific message in a P2P conversation.
       requestBody:
         content:
@@ -445,11 +453,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ReactP2pChatMessageResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
   /communication/p2p/message/reaction/remove:
     post:
       tags:
         - Communication
-      summary: RemoveP2pChatMessageReactionRequest
+      summary: Remove P2P Chat Message Reaction
       description: This endpoint allows the account to cancel a reaction from a specific message in a P2P conversation.
       requestBody:
         content:
@@ -463,12 +475,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ReactP2pChatMessageResponse'
+                $ref: '#/components/schemas/RemoveP2pChatMessageReactionResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
   /communication/p2p/message/reply:
     post:
       tags:
         - Communication
-      summary: ReplyP2pChatMessageRequest
+      summary: Reply To P2P Chat Message
       description: This endpoint allows the account to reply to a specific message with a simple text.
       requestBody:
         content:
@@ -483,6 +499,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ReplyP2pChatMessageResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
   /communication/groupchat:
     get:
       tags:
@@ -2491,11 +2511,6 @@ components:
       additionalProperties: false
     GetP2PChatsRequest:
       type: object
-      properties:
-        recipientId:
-          type: string
-          format: uuid
-          nullable: true
       additionalProperties: false
     GetP2PChatsResponse:
       type: object
@@ -2517,19 +2532,18 @@ components:
       additionalProperties: false
     GetP2pChatMessagesRequest:
       type: object
+      required:
+        - recipientId
       properties:
         recipientId:
           type: string
           format: uuid
-          nullable: true
         messageId:
           type: string
           format: uuid
-          nullable: true
         limit:
           type: integer
           format: int32
-          nullable: true
       additionalProperties: false
     GetP2pChatMessagesResponse:
       type: object
@@ -2552,7 +2566,6 @@ components:
         recipientId:
           type: string
           format: uuid
-          nullable: true
         messages:
           type: array
           items:
@@ -2645,15 +2658,12 @@ components:
         messageId:
           type: string
           format: uuid
-          nullable: true
         publisherId:
           type: string
           format: uuid
-          nullable: true
         publishedOn:
           type: integer
           format: int64
-          nullable: true
         updatedOn:
           type: integer
           format: int64
@@ -2668,7 +2678,7 @@ components:
               format: uuid
           nullable: true
         dataComponent:
-          nullable: true
+          $ref: '#/components/schemas/DataComponent'
       additionalProperties: false
     OpenBucketRequest:
       type: object
@@ -2734,7 +2744,6 @@ components:
         recipientId:
           type: string
           format: uuid
-          nullable: true
       additionalProperties: false
     Post:
       type: object
@@ -2833,10 +2842,8 @@ components:
         messageId:
           type: string
           format: uuid
-          nullable: true
         reaction:
           type: string
-          nullable: true
       additionalProperties: false
     ReactP2pChatMessageResponse:
       type: object
@@ -2859,8 +2866,32 @@ components:
         messageId:
           type: string
           format: uuid
-          nullable: true
         addedReaction:
+          type: string
+          nullable: true
+      additionalProperties: false
+    RemoveP2pChatMessageReactionResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        statusCode:
+          type: integer
+          format: int32
+          nullable: true
+        error:
+          type: string
+          nullable: true
+        data:
+          $ref: '#/components/schemas/RemoveP2pChatMessageReactionResponseData'
+      additionalProperties: false
+    RemoveP2pChatMessageReactionResponseData:
+      type: object
+      properties:
+        messageId:
+          type: string
+          format: uuid
+        removedReaction:
           type: string
           nullable: true
       additionalProperties: false
@@ -2915,10 +2946,8 @@ components:
         messageId:
           type: string
           format: uuid
-          nullable: true
         reaction:
           type: string
-          nullable: true
       additionalProperties: false
     ReplyGroupChatMessageRequest:
       type: object
@@ -2957,15 +2986,33 @@ components:
         sentReply:
           $ref: '#/components/schemas/Message'
       additionalProperties: false
-    ReplyP2PMessageResponseData:
+    ReplyMessage:
       type: object
       properties:
         messageId:
           type: string
           format: uuid
+        publisherId:
+          type: string
+          format: uuid
+        publishedOn:
+          type: integer
+          format: int64
+        updatedOn:
+          type: integer
+          format: int64
           nullable: true
-        sentReply:
-          $ref: '#/components/schemas/Message'
+        messageReactions:
+          type: object
+          additionalProperties:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+              format: uuid
+          nullable: true
+        dataComponent:
+          $ref: '#/components/schemas/DCSimpleText'
       additionalProperties: false
     ReplyP2pChatMessageRequest:
       type: object
@@ -2973,11 +3020,8 @@ components:
         messageId:
           type: string
           format: uuid
-          nullable: true
         dataComponent:
-          type: object
-          additionalProperties: {}
-          nullable: true
+          $ref: '#/components/schemas/DCSimpleText'
       additionalProperties: false
     ReplyP2pChatMessageResponse:
       type: object
@@ -2992,7 +3036,16 @@ components:
           type: string
           nullable: true
         data:
-          $ref: '#/components/schemas/ReplyP2PMessageResponseData'
+          $ref: '#/components/schemas/ReplyP2pChatMessageResponseData'
+      additionalProperties: false
+    ReplyP2pChatMessageResponseData:
+      type: object
+      properties:
+        messageId:
+          type: string
+          format: uuid
+        sentReply:
+          $ref: '#/components/schemas/ReplyMessage'
       additionalProperties: false
     SendToChannelRequest:
       type: object
@@ -3074,11 +3127,8 @@ components:
         recipientId:
           type: string
           format: uuid
-          nullable: true
         dataComponent:
-          type: object
-          additionalProperties: {}
-          nullable: true
+          $ref: '#/components/schemas/DataComponent'
       additionalProperties: false
     SendToP2pChatResponse:
       type: object
@@ -3095,50 +3145,12 @@ components:
         data:
           $ref: '#/components/schemas/SendToP2pResponseData'
       additionalProperties: false
-    SendToP2pChatTestRequest:
-      type: object
-      properties:
-        recipientId:
-          type: string
-          format: uuid
-          nullable: true
-        dataComponent:
-          type: object
-          additionalProperties: {}
-          nullable: true
-      additionalProperties: false
-    SendToP2pChatTestResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-        statusCode:
-          type: integer
-          format: int32
-          nullable: true
-        error:
-          type: string
-          nullable: true
-        data:
-          $ref: '#/components/schemas/SendToP2pResponseTestData'
-      additionalProperties: false
     SendToP2pResponseData:
       type: object
       properties:
         recipientId:
           type: string
           format: uuid
-          nullable: true
-        sentMessage:
-          $ref: '#/components/schemas/Message'
-      additionalProperties: false
-    SendToP2pResponseTestData:
-      type: object
-      properties:
-        recipientId:
-          type: string
-          format: uuid
-          nullable: true
         sentMessage:
           $ref: '#/components/schemas/Message'
       additionalProperties: false
@@ -3350,11 +3362,8 @@ components:
         messageId:
           type: string
           format: uuid
-          nullable: true
         dataComponent:
-          type: object
-          additionalProperties: {}
-          nullable: true
+          $ref: '#/components/schemas/DataComponent'
       additionalProperties: false
     UpdateP2pChatMessageResponse:
       type: object
