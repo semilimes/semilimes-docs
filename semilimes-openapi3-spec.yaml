@@ -4,7 +4,8 @@ info:
   description: |-
     This is the semilimes OpenAPI3 schema for generating custom clients with the language of your preference
     
-    🛑🛑🛑 **UNDER CONSTRUCTION** 🛑🛑🛑
+    > **Important Note**: This schema covers HTTP-only type of endpoints. To complete your client with websocket support, please refer to the official semilimes API documentation at the [websocket section](https://www.semilimes.com/developers/#websocket)
+    
   termsOfService: https://www.semilimes.com/terms-and-privacy/#terms-of-service
   contact: 
     name: semilimes
