@@ -1298,14 +1298,15 @@ paths:
     get:
       tags:
         - Service
-      summary: DownloadFileRequest
-      description: This endpoint makes the client download file content from the server, based on the file id specified.
+      summary: Download File
+      description: This endpoint downloads a file from the server, based on the specified file id.
       parameters:
-        - name: FileId
+        - name: fileId
+          required: true
           in: query
           schema:
             type: string
-        - name: ThumbnailSize
+        - name: thumbnailSize
           in: query
           schema:
             type: integer
@@ -1314,13 +1315,23 @@ paths:
         '200':
           description: OK
           content:
-            application/json:
-              schema: {}
+            image/*:
+              schema:
+                type: string
+                format: binary
+            application/*:
+              schema:
+                type: string
+                format: binary
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired' 
     post:
       tags:
         - Service
-      summary: DownloadFileRequest
-      description: This endpoint makes the client download file content from the server, based on the file id specified.
+      summary: Download File
+      description: This endpoint downloads a file from the server, based on the specified file id.
       requestBody:
         content:
           application/json:
@@ -1331,14 +1342,24 @@ paths:
         '200':
           description: OK
           content:
-            application/json:
+            image/*:
               schema:
                 type: string
                 format: binary
+            application/*:
+              schema:
+                type: string
+                format: binary
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired' 
   /service/file/upload:
     post:
       tags:
         - Service
+      summary: Upload File
+      description: This endpoint uploads one or more files to the server and receives the server-generated file ids for using them in messages.        
       requestBody:
         content:
           multipart/form-data:
@@ -1359,13 +1380,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UploadFileResponse'
-  /service/ws:
-    get:
-      tags:
-        - Service
-      responses:
-        '200':
-          description: Success
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'                
 security:
   - bearerAuth: []
 components:
