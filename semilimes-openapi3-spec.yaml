@@ -1947,25 +1947,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/FormComponent'
-    DCFormSubmission:
-      type: object
-      properties:
-        dataComponentType:
-          type: string
-          enum:
-            - formsubmission
-        replyTo:
-          type: object
-          properties:
-            messageId: 
-              type: string
-              format: uuid
-            refName:
-              type: string
-        formComponents:
-          type: array
-          items:
-            $ref: '#/components/schemas/FormComponent'
     DeleteTunnelRequest:
       type: object
       required:
