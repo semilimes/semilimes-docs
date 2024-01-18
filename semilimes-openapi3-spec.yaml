@@ -772,18 +772,18 @@ paths:
     get:
       tags:
         - Communication
-      summary: GetMyChannelsRequest
-      description: This endpoint retrieves the channel buckets the calling user account is publisher or subscriber of.
+      summary: Get My Channels
+      description: This endpoint retrieves the channels the calling user account is owner, editor or subscriber of.
       parameters:
-        - name: Owner
+        - name: owner
           in: query
           schema:
             type: boolean
-        - name: Editor
+        - name: editor
           in: query
           schema:
             type: boolean
-        - name: Subscriber
+        - name: subscriber
           in: query
           schema:
             type: boolean
@@ -794,11 +794,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetMyChannelsResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'                 
     post:
       tags:
         - Communication
-      summary: GetMyChannelsRequest
-      description: This endpoint retrieves the channel buckets the calling user account is publisher or subscriber of.
+      summary: Get My Channels
+      description: This endpoint retrieves the channels the calling user account is owner, editor or subscriber of.
       requestBody:
         content:
           application/json:
@@ -812,26 +816,34 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetMyChannelsResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'                
   /communication/channel:
     get:
       tags:
         - Communication
-      summary: GetChannelsRequest
+      summary: Get Channels
       description: This endpoint finds channels based on specified parameters.
       parameters:
-        - name: OwnerId
+        - name: ownerId
+          description: Returns channels owned by the specified account Id
           in: query
           schema:
             type: string
-        - name: EditorId
+        - name: editorId
+          description: Returns channels whose editor is this account Id
           in: query
           schema:
             type: string
-        - name: ChannelId
+        - name: channelId
+          description: Returns the channel with this id
           in: query
           schema:
             type: string
-        - name: Title
+        - name: title
+          description: Returns channels with this title
           in: query
           schema:
             type: string
@@ -842,10 +854,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetChannelsResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'                 
     post:
       tags:
         - Communication
-      summary: GetChannelsRequest
+      summary: Get Channels
       description: This endpoint finds channels based on specified parameters.
       requestBody:
         content:
@@ -860,22 +876,27 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetChannelsResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'                
   /communication/channel/message:
     get:
       tags:
         - Communication
-      summary: GetChannelMessagesRequest
-      description: This endpoint returns a list of messages in the specified Channel chat.
+      summary: Get Channel Messages
+      description: This endpoint returns a list of messages in the specified Channel.
       parameters:
-        - name: ChannelId
+        - name: channelId
+          required: true
           in: query
           schema:
             type: string
-        - name: MessageId
+        - name: messageId
           in: query
           schema:
             type: string
-        - name: Limit
+        - name: limit
           in: query
           schema:
             type: integer
@@ -887,11 +908,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetChannelMessagesResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'                 
     post:
       tags:
         - Communication
-      summary: GetChannelMessagesRequest
-      description: This endpoint returns a list of messages in the specified Channel chat.
+      summary: Get Channel Messages
+      description: This endpoint returns a list of messages in the specified Channel.
       requestBody:
         content:
           application/json:
@@ -905,12 +930,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetChannelMessagesResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'                 
   /communication/channel/create:
     post:
       tags:
         - Communication
-      summary: CreateChannelRequest
-      description: This endpoint allows to create a new channel and set the initial publishers. The role of the current accountId will be automatically publisher.
+      summary: Create Channel
+      description: This endpoint allows to create a new channel and set the initial editors. The role of the current accountId will be automatically set to editor.
       requestBody:
         content:
           application/json:
@@ -924,12 +953,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreateChannelResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'                 
   /communication/channel/message/send:
     post:
       tags:
         - Communication
-      summary: SendToChannelRequest
-      description: This endpoint allows to send a data component to a Channel as a new message, by specifying a conversation name.
+      summary: Send Message To Channel
+      description: This endpoint allows to send a data component to a Channel as a new message.
       requestBody:
         content:
           application/json:
@@ -943,11 +976,38 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SendToChannelResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'     
+  /communication/channel/message/update:
+    post:
+      tags:
+        - Communication
+      summary: Update Channel Message
+      description: This endpoint allows to update a specific message published in a channel.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateChannelMessageRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateChannelMessageResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'                 
   /communication/channel/subscribe:
     post:
       tags:
         - Communication
-      summary: SubscribeToChannelRequest
+      summary: Subscribe To Channel
       description: This endpoint makes the calling account to subscribe to an existing channel.
       requestBody:
         content:
@@ -962,11 +1022,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SubscribeToChannelResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
   /communication/channel/unsubscribe:
     post:
       tags:
         - Communication
-      summary: UnsubscribeToChannelRequest
+      summary: Unsubscribe From Channel
       description: This endpoint makes the calling account to unsubscribe from an existing channel.
       requestBody:
         content:
@@ -981,6 +1045,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UnsubscribeToChannelResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'                
   /communication/bucket:
     get:
       tags:
@@ -1446,7 +1514,6 @@ components:
         channelId:
           type: string
           format: uuid
-          nullable: true
         title:
           type: string
           nullable: true
@@ -1462,6 +1529,10 @@ components:
           nullable: true
         role:
           type: string
+          enum:
+            - Owner
+            - Editor
+            - Subscriber
           nullable: true
         ownerId:
           type: string
@@ -1516,6 +1587,10 @@ components:
       properties:
         title:
           type: string
+          nullable: true
+        avatar:
+          type: string
+          format: uuid
           nullable: true
         visible:
           type: boolean
@@ -2328,11 +2403,12 @@ components:
       additionalProperties: false
     GetChannelMessagesRequest:
       type: object
+      required: 
+        - channelId
       properties:
         channelId:
           type: string
           format: uuid
-          nullable: true
         messageId:
           type: string
           format: uuid
@@ -2534,13 +2610,10 @@ components:
       properties:
         owner:
           type: boolean
-          nullable: true
         editor:
           type: boolean
-          nullable: true
         subscriber:
           type: boolean
-          nullable: true
       additionalProperties: false
     GetMyChannelsResponse:
       type: object
@@ -3117,15 +3190,15 @@ components:
       additionalProperties: false
     SendToChannelRequest:
       type: object
+      required:
+        - channelId
+        - dataComponent
       properties:
         channelId:
           type: string
           format: uuid
-          nullable: true
         dataComponent:
-          type: object
-          additionalProperties: {}
-          nullable: true
+          $ref: '#/components/schemas/DataComponent'
       additionalProperties: false
     SendToChannelResponse:
       type: object
@@ -3148,7 +3221,6 @@ components:
         channelId:
           type: string
           format: uuid
-          nullable: true
         sentMessage:
           $ref: '#/components/schemas/Message'
       additionalProperties: false
@@ -3224,11 +3296,12 @@ components:
       additionalProperties: false
     SubscribeToChannelRequest:
       type: object
+      required:
+        - channelId
       properties:
         channelId:
           type: string
           format: uuid
-          nullable: true
       additionalProperties: false
     SubscribeToChannelResponse:
       type: object
@@ -3251,18 +3324,17 @@ components:
         channelId:
           type: string
           format: uuid
-          nullable: true
         subscribed:
           type: boolean
-          nullable: true
       additionalProperties: false
     UnsubscribeToChannelRequest:
       type: object
+      required:
+        - channelId
       properties:
         channelId:
           type: string
           format: uuid
-          nullable: true
       additionalProperties: false
     UnsubscribeToChannelResponse:
       type: object
@@ -3285,10 +3357,8 @@ components:
         channelId:
           type: string
           format: uuid
-          nullable: true
         subscribed:
           type: boolean
-          nullable: true
       additionalProperties: false
     UpdateAccountProfileRequest:
       type: object
@@ -3391,6 +3461,39 @@ components:
         updatedBucket:
           $ref: '#/components/schemas/Bucket'
       additionalProperties: false
+    UpdateChannelMessageRequest:
+      type: object
+      required:
+        - messageId
+        - dataComponent
+      properties:
+        messageId:
+          type: string
+          format: uuid
+        dataComponent:
+          $ref: '#/components/schemas/DataComponent'
+      additionalProperties: false
+    UpdateChannelMessageResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        statusCode:
+          type: integer
+          format: int32
+          nullable: true
+        error:
+          type: string
+          nullable: true
+        data:
+          $ref: '#/components/schemas/UpdateChannelMessageResponseData'
+      additionalProperties: false
+    UpdateChannelMessageResponseData:
+      type: object
+      properties:
+        updatedMessage:
+          $ref: '#/components/schemas/Message'
+      additionalProperties: false       
     UpdateGroupChatMessageRequest:
       type: object
       required:
