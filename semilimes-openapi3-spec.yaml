@@ -1162,12 +1162,51 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
         '402':
+          $ref: '#/components/responses/PaymentRequired'   
+  /service/tunnel:
+    get:
+      tags:
+        - Service
+      summary: Get Tunnels
+      description: This endpoint requests a SSH tunnel creation between the server and the calling client.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTunnelsResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
+    post:
+      tags:
+        - Service
+      summary: Get Tunnels
+      description: This endpoint requests a SSH tunnel creation between the server and the calling client.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetTunnelsRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTunnelsResponse' 
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
           $ref: '#/components/responses/PaymentRequired'                
   /service/tunnel/create:
     post:
       tags:
         - Service
-      summary: CreateTunnelRequest
+      summary: Create Tunnel
       description: This endpoint requests a SSH tunnel creation between the server and the calling client.
       requestBody:
         content:
@@ -1182,31 +1221,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreateTunnelResponse'
-  /service/tunnel/close:
-    post:
-      tags:
-        - Service
-      summary: CloseTunnelRequest
-      description: This endpoint shuts off a tunnel.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CloseTunnelRequest'
-        required: true
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CloseTunnelResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'                
   /service/tunnel/open:
     post:
       tags:
         - Service
-      summary: OpenTunnelRequest
-      description: This endpoint activates the tunnel and allocates a remote port on the tunnel provider.
+      summary: Open Tunnel Request
+      description: This endpoint allocates a remote port on the tunnel provider and activates the tunnel.
       requestBody:
         content:
           application/json:
@@ -1220,12 +1244,39 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OpenTunnelResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'                 
+  /service/tunnel/close:
+    post:
+      tags:
+        - Service
+      summary: Close Tunnel
+      description: This endpoint deactivates the specified tunnel.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CloseTunnelRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CloseTunnelResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'                 
   /service/tunnel/delete:
     post:
       tags:
         - Service
-      summary: DeleteTunnelRequest
-      description: This endpoint deletes a tunnel on the tunnel provider.
+      summary: Delete Tunnel Request
+      description: This endpoint permanently deletes a tunnel on the tunnel provider.
       requestBody:
         content:
           application/json:
@@ -1239,6 +1290,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DeleteTunnelResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'                
   /service/file/download:
     get:
       tags:
@@ -1601,11 +1656,12 @@ components:
       additionalProperties: false
     CloseTunnelRequest:
       type: object
+      required:
+        - tunnelId
       properties:
         tunnelId:
           type: string
           format: uuid
-          nullable: true
       additionalProperties: false
     CloseTunnelResponse:
       type: object
@@ -1717,23 +1773,23 @@ components:
       additionalProperties: false
     CreateTunnelRequest:
       type: object
+      required:
+        - name
+        - clientPort
+        - clientPath
+        - publicKey
       properties:
         name:
           type: string
-          nullable: true
         description:
           type: string
-          nullable: true
         clientPort:
           type: integer
           format: int32
-          nullable: true
         clientPath:
           type: string
-          nullable: true
         publicKey:
           type: string
-          nullable: true
       additionalProperties: false
     CreateTunnelResponse:
       type: object
@@ -1756,7 +1812,6 @@ components:
         tunnelId:
           type: string
           format: uuid
-          nullable: true
       additionalProperties: false
     DataComponent:
       oneOf:
@@ -1913,11 +1968,12 @@ components:
             $ref: '#/components/schemas/FormComponent'
     DeleteTunnelRequest:
       type: object
+      required:
+        - tunnelId
       properties:
         tunnelId:
           type: string
           format: uuid
-          nullable: true
       additionalProperties: false
     DeleteTunnelResponse:
       type: object
@@ -2750,6 +2806,52 @@ components:
             $ref: '#/components/schemas/Message'
           nullable: true
       additionalProperties: false
+    GetTunnelsRequest:
+      type: object
+      additionalProperties: false
+    GetTunnelsResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        statusCode:
+          type: integer
+          format: int32
+          nullable: true
+        error:
+          type: string
+          nullable: true
+        data:
+          $ref: '#/components/schemas/GetTunnelsResponseData'
+      additionalProperties: false
+    GetTunnelsResponseData:
+      type: array
+      items:
+        type: object
+        properties:
+          tunnelId:
+            type: string
+            format: uuid
+          name:
+            type: string
+          description:
+            type: string
+          clientPort:
+            type: integer
+            format: int32
+          clientPath:
+            type: string
+          publicKey:
+            type: string
+          host:
+            type: string
+          username: 
+            type: string
+          port:
+            type: integer
+            format: int32
+          tunnelUrl:
+            type: string
     GroupChat:
       type: object
       properties:
@@ -2883,11 +2985,12 @@ components:
       additionalProperties: false
     OpenTunnelRequest:
       type: object
+      required:
+        - tunnelId
       properties:
         tunnelId:
           type: string
           format: uuid
-          nullable: true
       additionalProperties: false
     OpenTunnelResponse:
       type: object
@@ -2910,11 +3013,15 @@ components:
         tunnelId:
           type: string
           format: uuid
-          nullable: true
-        serverPort:
+        host:
+          type: string
+        username:
+          type: string
+        port:
           type: integer
           format: int32
-          nullable: true
+        tunnelUrl:
+          type: string
       additionalProperties: false
     P2pChat:
       type: object
