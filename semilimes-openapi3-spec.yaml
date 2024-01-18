@@ -1053,10 +1053,11 @@ paths:
     get:
       tags:
         - Communication
-      summary: OpenBucketRequest
+      summary: Open Bucket
       description: This endpoint let the user access the bucket content by its bucketId.
       parameters:
-        - name: BucketId
+        - name: bucketId
+          required: true
           in: query
           schema:
             type: string
@@ -1067,10 +1068,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OpenBucketResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'                
     post:
       tags:
         - Communication
-      summary: OpenBucketRequest
+      summary: Open Bucket
       description: This endpoint let the user access the bucket content by its bucketId.
       requestBody:
         content:
@@ -1085,11 +1090,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OpenBucketResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'                
   /communication/bucket/update:
     post:
       tags:
         - Communication
-      summary: UpdateBucketContentRequest
+      summary: Update Bucket Content
       description: This endpoint allows the user to update the content of a specific bucket.
       requestBody:
         content:
@@ -1104,11 +1113,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UpdateBucketContentResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'                
   /communication/bucket/like:
     post:
       tags:
         - Communication
-      summary: AddLikeToBucketRequest
+      summary: Add Like To Bucket
       description: This endpoint sets a like by the current account to any referenced bucket that allows likes.
       requestBody:
         content:
@@ -1123,11 +1136,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AddLikeToBucketResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
   /communication/bucket/unlike:
     post:
       tags:
         - Communication
-      summary: RemoveLikeFromBucketRequest
+      summary: Remove Like From Bucket
       description: This endpoint unsets a like of the current account to any referenced bucket that allows likes.
       requestBody:
         content:
@@ -1142,6 +1159,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RemoveLikeFromBucketResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'                
   /service/tunnel/create:
     post:
       tags:
@@ -1363,11 +1384,12 @@ components:
       additionalProperties: false
     AddLikeToBucketRequest:
       type: object
+      required:
+        - bucketId
       properties:
         bucketId:
           type: string
           format: uuid
-          nullable: true
       additionalProperties: false
     AddLikeToBucketResponse:
       type: object
@@ -1390,10 +1412,8 @@ components:
         bucketId:
           type: string
           format: uuid
-          nullable: true
         like:
           type: boolean
-          nullable: true
       additionalProperties: false
     AddPostToAccountFeedRequest:
       type: object
@@ -1497,7 +1517,41 @@ components:
             $ref: '#/components/schemas/DataComponent'
           nullable: true
       additionalProperties: false
-    BucketReference:
+    DCBucket:
+      type: object
+      properties:
+        bucketId:
+          type: string
+          format: uuid
+        dataComponentType:
+          type: string
+          enum:
+            - bucket
+        title:
+          type: string
+          nullable: true            
+        description:
+          type: string
+          nullable: true
+        avatar:
+          type: string
+          format: uuid
+          nullable: true
+        visible:
+          type: boolean
+          nullable: true
+        locked:
+          type: boolean
+          nullable: true
+        enableReactions:
+          type: boolean
+          nullable: true
+        dataComponents:
+          type: array
+          items:
+            $ref: '#/components/schemas/DataComponent'
+      additionalProperties: false
+    DCBucketReference:
       type: object
       properties:
         dataComponentType:
@@ -1715,7 +1769,7 @@ components:
         - $ref: '#/components/schemas/DCChannel'
         - $ref: '#/components/schemas/DCTunnel'
         - $ref: '#/components/schemas/DCForm'
-        - $ref: '#/components/schemas/BucketReference'
+        - $ref: '#/components/schemas/DCBucketReference'
     DCSimpleText:
       type: object
       properties:
@@ -2805,11 +2859,12 @@ components:
       additionalProperties: false
     OpenBucketRequest:
       type: object
+      required:
+        - bucketId
       properties:
         bucketId:
           type: string
           format: uuid
-          nullable: true
       additionalProperties: false
     OpenBucketResponse:
       type: object
@@ -2880,7 +2935,7 @@ components:
           format: int64
           nullable: true
         dataComponent:
-          $ref: '#/components/schemas/BucketReference'
+          $ref: '#/components/schemas/DCBucketReference'
       additionalProperties: false
     Profile:
       type: object
@@ -3058,11 +3113,12 @@ components:
       additionalProperties: false
     RemoveLikeFromBucketRequest:
       type: object
+      required:
+        - bucketId
       properties:
         bucketId:
           type: string
           format: uuid
-          nullable: true
       additionalProperties: false
     RemoveLikeFromBucketResponse:
       type: object
@@ -3085,10 +3141,8 @@ components:
         bucketId:
           type: string
           format: uuid
-          nullable: true
         like:
           type: boolean
-          nullable: true
       additionalProperties: false
     RemoveP2pChatMessageReactionRequest:
       type: object
@@ -3404,38 +3458,7 @@ components:
               $ref: '#/components/schemas/Profile'
       additionalProperties: false
     UpdateBucketContentRequest:
-      type: object
-      properties:
-        bucketId:
-          type: string
-          format: uuid
-          nullable: true
-        title:
-          type: string
-          nullable: true
-        description:
-          type: string
-          nullable: true
-        avatar:
-          type: string
-          format: uuid
-          nullable: true
-        visible:
-          type: boolean
-          nullable: true
-        locked:
-          type: boolean
-          nullable: true
-        enableReactions:
-          type: boolean
-          nullable: true
-        dataComponents:
-          type: array
-          items:
-            type: object
-            additionalProperties: {}
-          nullable: true
-      additionalProperties: false
+      $ref: '#/components/schemas/DCBucket'
     UpdateBucketContentResponse:
       type: object
       properties:
@@ -3457,7 +3480,6 @@ components:
         accountId:
           type: string
           format: uuid
-          nullable: true
         updatedBucket:
           $ref: '#/components/schemas/Bucket'
       additionalProperties: false
