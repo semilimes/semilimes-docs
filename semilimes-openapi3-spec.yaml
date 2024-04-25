@@ -2092,6 +2092,11 @@ components:
           type: string
         requiredSelection:
           type: boolean
+        mode:
+          type: string
+          enum:
+            - list
+            - dropdown
         value: 
           type: string
           nullable: true
