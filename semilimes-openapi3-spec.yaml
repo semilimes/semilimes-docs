@@ -11,7 +11,7 @@ info:
     name: semilimes
     url: https://www.semilimes.com
     email: contact@semilimes.com
-  version: 1.0.0
+  version: 1.0.1
 servers:
   - url: https://api.semilimes.net
 paths:
@@ -1328,7 +1328,7 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '402':
           $ref: '#/components/responses/PaymentRequired' 
-    post:
+    get:
       tags:
         - Service
       summary: Download File
@@ -1384,7 +1384,24 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
         '402':
-          $ref: '#/components/responses/PaymentRequired'                
+          $ref: '#/components/responses/PaymentRequired'  
+  /service/llms:
+    post:
+      tags:
+        - Service
+      summary: LLM List
+      description: This endpoint lists the current llm(s) for the calling subaccount. The caller subaccount is implicit, so only the llms pertaining to the caller subaccount will be returned.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetLlmsResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
 security:
   - bearerAuth: []
 components:
@@ -2671,6 +2688,31 @@ components:
             $ref: '#/components/schemas/GroupChat'
           nullable: true
       additionalProperties: false
+    GetLlmsResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        statusCode:
+          type: integer
+          format: int32
+          nullable: true
+        error:
+          type: string
+          nullable: true
+        data:
+          $ref: '#/components/schemas/GetLlmsResponseData'
+      additionalProperties: false
+    GetLlmsResponseData:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+            format: uuid
+          autoResponse:
+            type: boolean
     GetMyAccountsRequest:
       type: object
       properties:
