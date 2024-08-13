@@ -1327,34 +1327,7 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
         '402':
-          $ref: '#/components/responses/PaymentRequired' 
-    get:
-      tags:
-        - Service
-      summary: Download File
-      description: This endpoint downloads a file from the server, based on the specified file id.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/DownloadFileRequest'
-        required: true
-      responses:
-        '200':
-          description: OK
-          content:
-            image/*:
-              schema:
-                type: string
-                format: binary
-            application/*:
-              schema:
-                type: string
-                format: binary
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '402':
-          $ref: '#/components/responses/PaymentRequired' 
+          $ref: '#/components/responses/PaymentRequired'
   /service/file/upload:
     post:
       tags:
@@ -1386,7 +1359,7 @@ paths:
         '402':
           $ref: '#/components/responses/PaymentRequired'  
   /service/llms:
-    post:
+    get:
       tags:
         - Service
       summary: LLM List
