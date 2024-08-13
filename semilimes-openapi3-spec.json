@@ -1,0 +1,5646 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "semilimes API - OpenAPI 3.0",
+    "description": "This is the semilimes OpenAPI3 schema for generating custom clients with the language of your preference\n\n> **Important Note**: This schema covers HTTP-only type of endpoints. To complete your client with websocket support, please refer to the official semilimes API documentation at the [websocket section](https://www.semilimes.com/developers/#websocket)",
+    "termsOfService": "https://www.semilimes.com/terms-and-privacy/#terms-of-service",
+    "contact": {
+      "name": "semilimes",
+      "url": "https://www.semilimes.com",
+      "email": "contact@semilimes.com"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.semilimes.net"
+    }
+  ],
+  "paths": {
+    "/account/my": {
+      "get": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "Get My Accounts",
+        "description": "This endpoint lists all the user accounts somehow linked to the calling user, including owned subaccounts and shared accounts.",
+        "parameters": [
+          {
+            "name": "main",
+            "in": "query",
+            "description": "Include the main/login account.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "sub",
+            "in": "query",
+            "description": "Include sub accounts.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "shared",
+            "in": "query",
+            "description": "Include accounts shared by other users.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "details",
+            "in": "query",
+            "description": "Include accounts' advanced properties.",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetMyAccountsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "Get My Accounts",
+        "description": "This endpoint lists all the user accounts somehow linked to the calling user, including owned subaccounts and shared accounts.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetMyAccountsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetMyAccountsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/account/profile": {
+      "get": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "Get Account Profile",
+        "description": "Gets the account profile's configuration and content.",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "query",
+            "description": "If not specified, the current account's profile gets returned.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAccountProfileResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "Get Account Profile",
+        "description": "Gets the account profile's configuration and content.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetAccountProfileRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAccountProfileResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/account/profile/update": {
+      "post": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "Update Account Profile",
+        "description": "This endpoint lets the user update the specified profile.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAccountProfileRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateAccountProfileResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/account/feed": {
+      "get": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "Get Account Feed",
+        "description": "Gets the account feed's configuration and content. Each post can only contain a bucket component type.",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "query",
+            "description": "If not specified, the current account's feed gets returned.",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "before",
+            "in": "query",
+            "description": "Get feed's content published before this date (unix timestamp).",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "after",
+            "in": "query",
+            "description": "Get feed's posts published before this date (unix timestamp).",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Maximum number of posts returned.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAccountFeedResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "Get Account Feed",
+        "description": "Gets the account feed's configuration and content. Each post can only contain a bucket component type.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetAccountFeedRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAccountFeedResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/account/feed/post/add": {
+      "post": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "Add Post To Account Feed",
+        "description": "This endpoint allows the user to add a new post to the feed.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddPostToAccountFeedRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddPostToAccountFeedResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/account/feed/post/update": {
+      "post": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "Update Post Content",
+        "description": "This endpoint allows the user to access the content of a post (bucket) and modify its content. The action is possible only if the user has the right permissions to modify the bucket.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePostContentRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdatePostContentResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/account/contacts": {
+      "get": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "Get Account Contacts",
+        "description": "This endpoint allows to retrieve all the current account contacts",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAccountContactsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "Get Account Contacts",
+        "description": "This endpoint allows to retrieve all the current account contacts",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetAccountContactsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAccountContactsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/communication/p2p": {
+      "get": {
+        "tags": [
+          "Communication"
+        ],
+        "summary": "Get P2P Chats",
+        "description": "This endpoint retrieves the p2p chats of the calling user account.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetP2PChatsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Communication"
+        ],
+        "summary": "Get P2P Chats",
+        "description": "This endpoint retrieves the p2p chats of the calling user account.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetP2PChatsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetP2PChatsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/communication/p2p/message": {
+      "get": {
+        "tags": [
+          "Communication"
+        ],
+        "summary": "Get P2P Chat Messages",
+        "description": "This endpoint returns a list of messages in the specified P2P chat",
+        "parameters": [
+          {
+            "name": "recipientId",
+            "in": "query",
+            "required": true,
+            "description": "Filters the p2p chats list by showing only the one occurring with the specified account id.",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "messageId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetP2pChatMessagesResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Communication"
+        ],
+        "summary": "Get P2P Chat Messages",
+        "description": "This endpoint returns a list of messages in the specified P2P chat",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetP2pChatMessagesRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetP2pChatMessagesResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/communication/p2p/message/send": {
+      "post": {
+        "tags": [
+          "Communication"
+        ],
+        "summary": "Send Message To P2P Chat",
+        "description": "This endpoint allows to send a data component to a P2P Chat as a new message.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendToP2pChatRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendToP2pChatResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/communication/p2p/message/update": {
+      "post": {
+        "tags": [
+          "Communication"
+        ],
+        "summary": "Update P2P Chat Message",
+        "description": "This endpoint allows to edit a previously sent message.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateP2pChatMessageRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateP2pChatMessageResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/communication/p2p/message/reaction/send": {
+      "post": {
+        "tags": [
+          "Communication"
+        ],
+        "summary": "React To P2P Chat Message",
+        "description": "This endpoint allows the account to send a reaction to a specific message in a P2P conversation.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReactP2pChatMessageRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReactP2pChatMessageResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/communication/p2p/message/reaction/remove": {
+      "post": {
+        "tags": [
+          "Communication"
+        ],
+        "summary": "Remove P2P Chat Message Reaction",
+        "description": "This endpoint allows the account to cancel a reaction from a specific message in a P2P conversation.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveP2pChatMessageReactionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RemoveP2pChatMessageReactionResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/communication/p2p/message/reply": {
+      "post": {
+        "tags": [
+          "Communication"
+        ],
+        "summary": "Reply To P2P Chat Message",
+        "description": "This endpoint allows the account to reply to a specific message with a simple text.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReplyP2pChatMessageRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReplyP2pChatMessageResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/communication/groupchat": {
+      "get": {
+        "tags": [
+          "Communication"
+        ],
+        "summary": "Get Group Chats",
+        "description": "This endpoint retrieves the group chats of the calling user account.",
+        "parameters": [
+          {
+            "name": "recipientIds[]",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "format": "uuid",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetGroupChatsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Communication"
+        ],
+        "summary": "Get Group Chats",
+        "description": "This endpoint retrieves the group chats of the calling user account.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetGroupChatsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetGroupChatsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/communication/groupchat/create": {
+      "post": {
+        "tags": [
+          "Communication"
+        ],
+        "summary": "Create Group Chat",
+        "description": "This endpoint creates a new group chat with a specified name. It's also possible to directly invite other accounts to the chat upon creation by specifying their accountIds in the `recipientIds` array.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateGroupChatRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateGroupChatResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/communication/groupchat/message": {
+      "get": {
+        "tags": [
+          "Communication"
+        ],
+        "summary": "Get Group Chat Messages",
+        "description": "This endpoint returns a list of messages in the specified Group chat.",
+        "parameters": [
+          {
+            "name": "groupChatId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "messageId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetGroupChatMessagesResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Communication"
+        ],
+        "summary": "Get Group Chat Messages",
+        "description": "This endpoint returns a list of messages in the specified Group chat.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetGroupChatMessagesRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetGroupChatMessagesResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/communication/groupchat/invite": {
+      "post": {
+        "tags": [
+          "Communication"
+        ],
+        "summary": "Invite To Group Chat",
+        "description": "This endpoint allows to invite other recipients to the specified group chat.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InviteToGroupChatRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InviteToGroupChatResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/communication/groupchat/message/send": {
+      "post": {
+        "tags": [
+          "Communication"
+        ],
+        "summary": "Send Message To Group Chat",
+        "description": "This endpoint allows to send a data component to a Group Chat as a new message.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendToGroupChatRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendToGroupChatResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/communication/groupchat/message/update": {
+      "post": {
+        "tags": [
+          "Communication"
+        ],
+        "summary": "Update Group Chat Message",
+        "description": "This endpoint allows to edit a previously sent message.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateGroupChatMessageRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateGroupChatMessageResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/communication/groupchat/message/reaction/send": {
+      "post": {
+        "tags": [
+          "Communication"
+        ],
+        "summary": "React To Group Chat Message",
+        "description": "This endpoint allows the account to send a reaction to a specific message in a Group conversation.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReactGroupChatMessageRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReactGroupChatMessageResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/communication/groupchat/message/reaction/remove": {
+      "post": {
+        "tags": [
+          "Communication"
+        ],
+        "summary": "RemoveGroupChatMessageReactionRequest",
+        "description": "This endpoint allows the account to remove a reaction from a specific message in a Group Chat.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveGroupChatMessageReactionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RemoveGroupChatMessageReactionResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/communication/groupchat/message/reply": {
+      "post": {
+        "tags": [
+          "Communication"
+        ],
+        "summary": "Reply To Group Chat Message",
+        "description": "This endpoint allows the account to reply to a specific message with a simple text.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReplyGroupChatMessageRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReplyGroupChatMessageResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/communication/channel/my": {
+      "get": {
+        "tags": [
+          "Communication"
+        ],
+        "summary": "Get My Channels",
+        "description": "This endpoint retrieves the channels the calling user account is owner, editor or subscriber of.",
+        "parameters": [
+          {
+            "name": "owner",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "editor",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "subscriber",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetMyChannelsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Communication"
+        ],
+        "summary": "Get My Channels",
+        "description": "This endpoint retrieves the channels the calling user account is owner, editor or subscriber of.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetMyChannelsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetMyChannelsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/communication/channel": {
+      "get": {
+        "tags": [
+          "Communication"
+        ],
+        "summary": "Get Channels",
+        "description": "This endpoint finds channels based on specified parameters.",
+        "parameters": [
+          {
+            "name": "ownerId",
+            "description": "Returns channels owned by the specified account Id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "editorId",
+            "description": "Returns channels whose editor is this account Id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "channelId",
+            "description": "Returns the channel with this id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "title",
+            "description": "Returns channels with this title",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetChannelsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Communication"
+        ],
+        "summary": "Get Channels",
+        "description": "This endpoint finds channels based on specified parameters.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetChannelsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetChannelsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/communication/channel/message": {
+      "get": {
+        "tags": [
+          "Communication"
+        ],
+        "summary": "Get Channel Messages",
+        "description": "This endpoint returns a list of messages in the specified Channel.",
+        "parameters": [
+          {
+            "name": "channelId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "messageId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetChannelMessagesResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Communication"
+        ],
+        "summary": "Get Channel Messages",
+        "description": "This endpoint returns a list of messages in the specified Channel.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetChannelMessagesRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetChannelMessagesResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/communication/channel/create": {
+      "post": {
+        "tags": [
+          "Communication"
+        ],
+        "summary": "Create Channel",
+        "description": "This endpoint allows to create a new channel and set the initial editors. The role of the current accountId will be automatically set to editor.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateChannelRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateChannelResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/communication/channel/message/send": {
+      "post": {
+        "tags": [
+          "Communication"
+        ],
+        "summary": "Send Message To Channel",
+        "description": "This endpoint allows to send a data component to a Channel as a new message.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendToChannelRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendToChannelResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/communication/channel/message/update": {
+      "post": {
+        "tags": [
+          "Communication"
+        ],
+        "summary": "Update Channel Message",
+        "description": "This endpoint allows to update a specific message published in a channel.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateChannelMessageRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateChannelMessageResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/communication/channel/subscribe": {
+      "post": {
+        "tags": [
+          "Communication"
+        ],
+        "summary": "Subscribe To Channel",
+        "description": "This endpoint makes the calling account to subscribe to an existing channel.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubscribeToChannelRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubscribeToChannelResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/communication/channel/unsubscribe": {
+      "post": {
+        "tags": [
+          "Communication"
+        ],
+        "summary": "Unsubscribe From Channel",
+        "description": "This endpoint makes the calling account to unsubscribe from an existing channel.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UnsubscribeToChannelRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnsubscribeToChannelResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/communication/bucket": {
+      "get": {
+        "tags": [
+          "Communication"
+        ],
+        "summary": "Open Bucket",
+        "description": "This endpoint let the user access the bucket content by its bucketId.",
+        "parameters": [
+          {
+            "name": "bucketId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBucketResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Communication"
+        ],
+        "summary": "Open Bucket",
+        "description": "This endpoint let the user access the bucket content by its bucketId.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OpenBucketRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBucketResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/communication/bucket/update": {
+      "post": {
+        "tags": [
+          "Communication"
+        ],
+        "summary": "Update Bucket Content",
+        "description": "This endpoint allows the user to update the content of a specific bucket.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateBucketContentRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateBucketContentResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/communication/bucket/like": {
+      "post": {
+        "tags": [
+          "Communication"
+        ],
+        "summary": "Add Like To Bucket",
+        "description": "This endpoint sets a like by the current account to any referenced bucket that allows likes.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddLikeToBucketRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddLikeToBucketResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/communication/bucket/unlike": {
+      "post": {
+        "tags": [
+          "Communication"
+        ],
+        "summary": "Remove Like From Bucket",
+        "description": "This endpoint unsets a like of the current account to any referenced bucket that allows likes.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveLikeFromBucketRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RemoveLikeFromBucketResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/service/tunnel": {
+      "get": {
+        "tags": [
+          "Service"
+        ],
+        "summary": "Get Tunnels",
+        "description": "This endpoint requests a SSH tunnel creation between the server and the calling client.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTunnelsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Service"
+        ],
+        "summary": "Get Tunnels",
+        "description": "This endpoint requests a SSH tunnel creation between the server and the calling client.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetTunnelsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTunnelsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/service/tunnel/create": {
+      "post": {
+        "tags": [
+          "Service"
+        ],
+        "summary": "Create Tunnel",
+        "description": "This endpoint requests a SSH tunnel creation between the server and the calling client.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTunnelRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateTunnelResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/service/tunnel/open": {
+      "post": {
+        "tags": [
+          "Service"
+        ],
+        "summary": "Open Tunnel Request",
+        "description": "This endpoint allocates a remote port on the tunnel provider and activates the tunnel.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OpenTunnelRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenTunnelResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/service/tunnel/close": {
+      "post": {
+        "tags": [
+          "Service"
+        ],
+        "summary": "Close Tunnel",
+        "description": "This endpoint deactivates the specified tunnel.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CloseTunnelRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CloseTunnelResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/service/tunnel/delete": {
+      "post": {
+        "tags": [
+          "Service"
+        ],
+        "summary": "Delete Tunnel Request",
+        "description": "This endpoint permanently deletes a tunnel on the tunnel provider.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteTunnelRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteTunnelResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/service/file/download": {
+      "get": {
+        "tags": [
+          "Service"
+        ],
+        "summary": "Download File",
+        "description": "This endpoint downloads a file from the server, based on the specified file id.",
+        "parameters": [
+          {
+            "name": "fileId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "thumbnailSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "image/*": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "application/*": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Service"
+        ],
+        "summary": "Download File",
+        "description": "This endpoint downloads a file from the server, based on the specified file id.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DownloadFileRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "image/*": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "application/*": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    },
+    "/service/file/upload": {
+      "post": {
+        "tags": [
+          "Service"
+        ],
+        "summary": "Upload File",
+        "description": "This endpoint uploads one or more files to the server and receives the server-generated file ids for using them in messages.",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "httpFiles"
+                ],
+                "type": "object",
+                "properties": {
+                  "httpFiles": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadFileResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "components": {
+    "responses": {
+      "Unauthorized": {
+        "description": "Unauthorized - Invalid API Key"
+      },
+      "PaymentRequired": {
+        "description": "Payment Required - API Key out of credit"
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "apikey"
+      }
+    },
+    "schemas": {
+      "Account": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "semilimesId": {
+            "type": "string",
+            "nullable": true
+          },
+          "accountName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ownerAccountId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "lastSeen": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "updatedAt": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "parentAccountId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "accessRole": {
+            "type": "string",
+            "enum": [
+              "Owner",
+              "Admin",
+              "Editor",
+              "Viewer"
+            ],
+            "nullable": true
+          },
+          "viewCount": {
+            "type": "integer",
+            "nullable": true
+          },
+          "likeCount": {
+            "type": "integer",
+            "nullable": true
+          },
+          "commentCount": {
+            "type": "integer",
+            "nullable": true
+          },
+          "onlineStatus": {
+            "type": "string",
+            "enum": [
+              "Online",
+              "Offline"
+            ],
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddLikeToBucketRequest": {
+        "type": "object",
+        "required": [
+          "bucketId"
+        ],
+        "properties": {
+          "bucketId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddLikeToBucketResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/AddLikeToBucketResponseData"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddLikeToBucketResponseData": {
+        "type": "object",
+        "properties": {
+          "bucketId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "like": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddPostToAccountFeedRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "avatar": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "visible": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "locked": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "enableReactions": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "dataComponents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataComponent"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddPostToAccountFeedResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/AddPostToAccountFeedResponseData"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddPostToAccountFeedResponseData": {
+        "type": "object",
+        "properties": {
+          "feedId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "accountId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "addedPost": {
+            "$ref": "#/components/schemas/Post"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Bucket": {
+        "type": "object",
+        "properties": {
+          "bucketId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "dataComponentType": {
+            "type": "string",
+            "enum": [
+              "bucket"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "ownerId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "Owner",
+              "Admin",
+              "Editor",
+              "Viewer"
+            ],
+            "nullable": true
+          },
+          "avatar": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "visible": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "locked": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "enableReactions": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "dataComponents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataComponent"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DCBucket": {
+        "type": "object",
+        "properties": {
+          "bucketId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "dataComponentType": {
+            "type": "string",
+            "enum": [
+              "bucket"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "avatar": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "visible": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "locked": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "enableReactions": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "dataComponents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataComponent"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "DCBucketReference": {
+        "type": "object",
+        "properties": {
+          "dataComponentType": {
+            "type": "string",
+            "enum": [
+              "bucket"
+            ]
+          },
+          "bucketId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Channel": {
+        "type": "object",
+        "properties": {
+          "channelId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "avatar": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "visible": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "locked": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "Owner",
+              "Editor",
+              "Subscriber"
+            ],
+            "nullable": true
+          },
+          "ownerId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "editorIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CloseTunnelRequest": {
+        "type": "object",
+        "required": [
+          "tunnelId"
+        ],
+        "properties": {
+          "tunnelId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CloseTunnelResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Contact": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "accountName": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactStatus": {
+            "type": "string",
+            "enum": [
+              "CONFIRMED",
+              "INVITED",
+              "WAITING"
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateChannelRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "avatar": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "visible": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "locked": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "editorIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateChannelResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/CreateChannelResponseData"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateChannelResponseData": {
+        "type": "object",
+        "properties": {
+          "createdChannel": {
+            "$ref": "#/components/schemas/Channel"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateGroupChatRequest": {
+        "type": "object",
+        "required": [
+          "title",
+          "recipientIds"
+        ],
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "recipientIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateGroupChatResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/CreateGroupChatResponseData"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateGroupChatResponseData": {
+        "type": "object",
+        "properties": {
+          "createdGroupChat": {
+            "$ref": "#/components/schemas/GroupChat"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateTunnelRequest": {
+        "type": "object",
+        "required": [
+          "name",
+          "clientPort",
+          "clientPath",
+          "publicKey"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "clientPort": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "clientPath": {
+            "type": "string"
+          },
+          "publicKey": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateTunnelResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/CreateTunnelResponseData"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateTunnelResponseData": {
+        "type": "object",
+        "properties": {
+          "tunnelId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false
+      },
+      "DataComponent": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/DCSimpleText"
+          },
+          {
+            "$ref": "#/components/schemas/DCHtmlText"
+          },
+          {
+            "$ref": "#/components/schemas/DCFile"
+          },
+          {
+            "$ref": "#/components/schemas/DCContact"
+          },
+          {
+            "$ref": "#/components/schemas/DCLocation"
+          },
+          {
+            "$ref": "#/components/schemas/DCWebView"
+          },
+          {
+            "$ref": "#/components/schemas/DCChannel"
+          },
+          {
+            "$ref": "#/components/schemas/DCTunnel"
+          },
+          {
+            "$ref": "#/components/schemas/DCForm"
+          },
+          {
+            "$ref": "#/components/schemas/DCBucketReference"
+          }
+        ]
+      },
+      "DCSimpleText": {
+        "type": "object",
+        "properties": {
+          "dataComponentType": {
+            "type": "string",
+            "enum": [
+              "text"
+            ]
+          },
+          "text": {
+            "type": "string"
+          }
+        }
+      },
+      "DCHtmlText": {
+        "type": "object",
+        "properties": {
+          "dataComponentType": {
+            "type": "string",
+            "enum": [
+              "html"
+            ]
+          },
+          "html": {
+            "type": "string"
+          }
+        }
+      },
+      "DCFile": {
+        "type": "object",
+        "properties": {
+          "dataComponentType": {
+            "type": "string",
+            "enum": [
+              "file"
+            ]
+          },
+          "fileIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "DCContact": {
+        "type": "object",
+        "properties": {
+          "dataComponentType": {
+            "type": "string",
+            "enum": [
+              "contact"
+            ]
+          },
+          "contactIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        }
+      },
+      "DCLocation": {
+        "type": "object",
+        "properties": {
+          "dataComponentType": {
+            "type": "string",
+            "enum": [
+              "location"
+            ]
+          },
+          "locationName": {
+            "type": "string"
+          },
+          "latitude": {
+            "type": "number"
+          },
+          "longitude": {
+            "type": "number"
+          }
+        }
+      },
+      "DCWebView": {
+        "type": "object",
+        "properties": {
+          "dataComponentType": {
+            "type": "string",
+            "enum": [
+              "webview"
+            ]
+          },
+          "url": {
+            "type": "string"
+          },
+          "enableFullScreenView": {
+            "type": "boolean"
+          },
+          "viewSize": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "1:2",
+              "2:1",
+              "3:2"
+            ]
+          }
+        }
+      },
+      "DCChannel": {
+        "type": "object",
+        "properties": {
+          "dataComponentType": {
+            "type": "string",
+            "enum": [
+              "channel"
+            ]
+          },
+          "channelId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "DCTunnel": {
+        "type": "object",
+        "properties": {
+          "dataComponentType": {
+            "type": "string",
+            "enum": [
+              "tunnel"
+            ]
+          },
+          "tunnelId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "DCForm": {
+        "type": "object",
+        "properties": {
+          "dataComponentType": {
+            "type": "string",
+            "enum": [
+              "form"
+            ]
+          },
+          "submitEnabled": {
+            "type": "boolean"
+          },
+          "retainStatus": {
+            "type": "boolean"
+          },
+          "submitText": {
+            "type": "string"
+          },
+          "receiver": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "featureType": {
+                "type": "string",
+                "enum": [
+                  "contact",
+                  "groupchat",
+                  "channel"
+                ]
+              }
+            }
+          },
+          "refName": {
+            "type": "string"
+          },
+          "formComponents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FormComponent"
+            }
+          }
+        }
+      },
+      "DeleteTunnelRequest": {
+        "type": "object",
+        "required": [
+          "tunnelId"
+        ],
+        "properties": {
+          "tunnelId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false
+      },
+      "DeleteTunnelResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DownloadFileRequest": {
+        "type": "object",
+        "properties": {
+          "fileId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "thumbnailSize": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Feed": {
+        "type": "object",
+        "properties": {
+          "feedId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "accountId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "featureType": {
+            "type": "string",
+            "enum": [
+              "feed"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "avatar": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "posts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Post"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "FCLabel": {
+        "type": "object",
+        "properties": {
+          "refName": {
+            "type": "string"
+          },
+          "formComponentType": {
+            "type": "string",
+            "enum": [
+              "label"
+            ]
+          },
+          "title": {
+            "type": "string"
+          }
+        }
+      },
+      "FCTextBox": {
+        "type": "object",
+        "properties": {
+          "refName": {
+            "type": "string"
+          },
+          "formComponentType": {
+            "type": "string",
+            "enum": [
+              "textbox"
+            ]
+          },
+          "title": {
+            "type": "string"
+          },
+          "requiredSelection": {
+            "type": "boolean"
+          },
+          "value": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "FCButtonList": {
+        "type": "object",
+        "properties": {
+          "refName": {
+            "type": "string"
+          },
+          "formComponentType": {
+            "type": "string",
+            "enum": [
+              "buttonlist"
+            ]
+          },
+          "title": {
+            "type": "string"
+          },
+          "requiredSelection": {
+            "type": "boolean"
+          },
+          "value": {
+            "type": "string",
+            "nullable": true
+          },
+          "verticalList": {
+            "type": "boolean"
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "FCSingleChoice": {
+        "type": "object",
+        "properties": {
+          "refName": {
+            "type": "string"
+          },
+          "formComponentType": {
+            "type": "string",
+            "enum": [
+              "singlechoice"
+            ]
+          },
+          "title": {
+            "type": "string"
+          },
+          "requiredSelection": {
+            "type": "boolean"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "list",
+              "dropdown"
+            ]
+          },
+          "value": {
+            "type": "string",
+            "nullable": true
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "FCMultiChoice": {
+        "type": "object",
+        "properties": {
+          "refName": {
+            "type": "string"
+          },
+          "formComponentType": {
+            "type": "string",
+            "enum": [
+              "multichoice"
+            ]
+          },
+          "title": {
+            "type": "string"
+          },
+          "requiredSelection": {
+            "type": "boolean"
+          },
+          "value": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "FCSwitch": {
+        "type": "object",
+        "properties": {
+          "refName": {
+            "type": "string"
+          },
+          "formComponentType": {
+            "type": "string",
+            "enum": [
+              "switch"
+            ]
+          },
+          "title": {
+            "type": "string"
+          },
+          "value": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "FCSlider": {
+        "type": "object",
+        "properties": {
+          "refName": {
+            "type": "string"
+          },
+          "formComponentType": {
+            "type": "string",
+            "enum": [
+              "slider"
+            ]
+          },
+          "title": {
+            "type": "string"
+          },
+          "requiredSelection": {
+            "type": "boolean"
+          },
+          "value": {
+            "type": "integer",
+            "nullable": true
+          },
+          "min": {
+            "type": "integer"
+          },
+          "max": {
+            "type": "integer"
+          },
+          "step": {
+            "type": "integer"
+          }
+        }
+      },
+      "FCDatePicker": {
+        "type": "object",
+        "properties": {
+          "refName": {
+            "type": "string"
+          },
+          "formComponentType": {
+            "type": "string",
+            "enum": [
+              "datepicker"
+            ]
+          },
+          "title": {
+            "type": "string"
+          },
+          "requiredSelection": {
+            "type": "boolean"
+          },
+          "value": {
+            "type": "string",
+            "nullable": true
+          },
+          "actionButtonTitle": {
+            "type": "string"
+          }
+        }
+      },
+      "FCTimePicker": {
+        "type": "object",
+        "properties": {
+          "refName": {
+            "type": "string"
+          },
+          "formComponentType": {
+            "type": "string",
+            "enum": [
+              "timepicker"
+            ]
+          },
+          "title": {
+            "type": "string"
+          },
+          "requiredSelection": {
+            "type": "boolean"
+          },
+          "value": {
+            "type": "string",
+            "nullable": true
+          },
+          "actionButtonTitle": {
+            "type": "string"
+          }
+        }
+      },
+      "FCLocationPicker": {
+        "type": "object",
+        "properties": {
+          "refName": {
+            "type": "string"
+          },
+          "formComponentType": {
+            "type": "string",
+            "enum": [
+              "locationpicker"
+            ]
+          },
+          "title": {
+            "type": "string"
+          },
+          "requiredSelection": {
+            "type": "boolean"
+          },
+          "value": {
+            "type": "string",
+            "nullable": true
+          },
+          "actionButtonTitle": {
+            "type": "string"
+          },
+          "currentLocationOnly": {
+            "type": "boolean"
+          }
+        }
+      },
+      "FCPhotoPicker": {
+        "type": "object",
+        "properties": {
+          "refName": {
+            "type": "string"
+          },
+          "formComponentType": {
+            "type": "string",
+            "enum": [
+              "photopicker"
+            ]
+          },
+          "title": {
+            "type": "string"
+          },
+          "requiredSelection": {
+            "type": "boolean"
+          },
+          "value": {
+            "type": "object",
+            "properties": {
+              "fileType": {
+                "type": "string"
+              },
+              "fileId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "fileName": {
+                "type": "string"
+              },
+              "fileSize": {
+                "type": "integer"
+              }
+            },
+            "nullable": true
+          },
+          "actionButtonTitle": {
+            "type": "string"
+          },
+          "multiSelection": {
+            "type": "boolean"
+          }
+        }
+      },
+      "FCFilePicker": {
+        "type": "object",
+        "properties": {
+          "refName": {
+            "type": "string"
+          },
+          "formComponentType": {
+            "type": "string",
+            "enum": [
+              "filepicker"
+            ]
+          },
+          "title": {
+            "type": "string"
+          },
+          "requiredSelection": {
+            "type": "boolean"
+          },
+          "value": {
+            "type": "object",
+            "properties": {
+              "fileType": {
+                "type": "string"
+              },
+              "fileId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "fileName": {
+                "type": "string"
+              },
+              "fileSize": {
+                "type": "integer"
+              }
+            },
+            "nullable": true
+          },
+          "actionButtonTitle": {
+            "type": "string"
+          },
+          "multiSelection": {
+            "type": "boolean"
+          }
+        }
+      },
+      "FCContactPicker": {
+        "type": "object",
+        "properties": {
+          "refName": {
+            "type": "string"
+          },
+          "formComponentType": {
+            "type": "string",
+            "enum": [
+              "contactpicker"
+            ]
+          },
+          "title": {
+            "type": "string"
+          },
+          "requiredSelection": {
+            "type": "boolean"
+          },
+          "value": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "nullable": true
+          },
+          "actionButtonTitle": {
+            "type": "string"
+          },
+          "multiSelection": {
+            "type": "boolean"
+          }
+        }
+      },
+      "FCBucketPicker": {
+        "type": "object",
+        "properties": {
+          "refName": {
+            "type": "string"
+          },
+          "formComponentType": {
+            "type": "string",
+            "enum": [
+              "bucketpicker"
+            ]
+          },
+          "title": {
+            "type": "string"
+          },
+          "requiredSelection": {
+            "type": "boolean"
+          },
+          "value": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "featureType": {
+                  "type": "string",
+                  "enum": [
+                    "groupchat",
+                    "channel"
+                  ]
+                }
+              }
+            },
+            "nullable": true
+          },
+          "filter": {
+            "type": "object",
+            "properties": {
+              "types": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "post",
+                    "profile",
+                    "groupchat",
+                    "channel"
+                  ]
+                }
+              }
+            }
+          },
+          "actionButtonTitle": {
+            "type": "string"
+          },
+          "multiSelection": {
+            "type": "boolean"
+          }
+        }
+      },
+      "FCHiddenValue": {
+        "type": "object",
+        "properties": {
+          "refName": {
+            "type": "string"
+          },
+          "formComponentType": {
+            "type": "string",
+            "enum": [
+              "hiddenvalue"
+            ]
+          },
+          "value": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "FCQrCodeScanner": {
+        "type": "object",
+        "properties": {
+          "refName": {
+            "type": "string"
+          },
+          "formComponentType": {
+            "type": "string",
+            "enum": [
+              "qrcodescanner"
+            ]
+          },
+          "title": {
+            "type": "string"
+          },
+          "requiredSelection": {
+            "type": "boolean"
+          },
+          "value": {
+            "type": "string",
+            "nullable": true
+          },
+          "actionButtonTitle": {
+            "type": "string"
+          }
+        }
+      },
+      "FCNfcReader": {
+        "type": "object",
+        "properties": {
+          "refName": {
+            "type": "string"
+          },
+          "formComponentType": {
+            "type": "string",
+            "enum": [
+              "nfcreader"
+            ]
+          },
+          "title": {
+            "type": "string"
+          },
+          "requiredSelection": {
+            "type": "boolean"
+          },
+          "value": {
+            "type": "string",
+            "nullable": true
+          },
+          "actionButtonTitle": {
+            "type": "string"
+          }
+        }
+      },
+      "FileInfo": {
+        "type": "object",
+        "properties": {
+          "fileId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "size": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "FormComponent": {
+        "type": "object",
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/FCLabel"
+          },
+          {
+            "$ref": "#/components/schemas/FCTextBox"
+          },
+          {
+            "$ref": "#/components/schemas/FCButtonList"
+          },
+          {
+            "$ref": "#/components/schemas/FCSingleChoice"
+          },
+          {
+            "$ref": "#/components/schemas/FCMultiChoice"
+          },
+          {
+            "$ref": "#/components/schemas/FCSwitch"
+          },
+          {
+            "$ref": "#/components/schemas/FCSlider"
+          },
+          {
+            "$ref": "#/components/schemas/FCDatePicker"
+          },
+          {
+            "$ref": "#/components/schemas/FCTimePicker"
+          },
+          {
+            "$ref": "#/components/schemas/FCLocationPicker"
+          },
+          {
+            "$ref": "#/components/schemas/FCPhotoPicker"
+          },
+          {
+            "$ref": "#/components/schemas/FCFilePicker"
+          },
+          {
+            "$ref": "#/components/schemas/FCContactPicker"
+          },
+          {
+            "$ref": "#/components/schemas/FCBucketPicker"
+          },
+          {
+            "$ref": "#/components/schemas/FCHiddenValue"
+          },
+          {
+            "$ref": "#/components/schemas/FCQrCodeScanner"
+          },
+          {
+            "$ref": "#/components/schemas/FCNfcReader"
+          }
+        ]
+      },
+      "GetAccountContactsRequest": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "GetAccountContactsResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Contact"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetAccountFeedRequest": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "before": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "after": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "limit": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetAccountFeedResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/Feed"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetAccountProfileRequest": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetAccountProfileResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/Profile"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetChannelMessagesRequest": {
+        "type": "object",
+        "required": [
+          "channelId"
+        ],
+        "properties": {
+          "channelId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "messageId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "limit": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetChannelMessagesResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/GetChannelMessagesResponseData"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetChannelMessagesResponseData": {
+        "type": "object",
+        "properties": {
+          "channelId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Message"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetChannelsRequest": {
+        "type": "object",
+        "properties": {
+          "ownerId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "editorId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "channelId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetChannelsResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Channel"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetGroupChatMessagesRequest": {
+        "type": "object",
+        "required": [
+          "groupChatId"
+        ],
+        "properties": {
+          "groupChatId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "messageId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "limit": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetGroupChatMessagesResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/GetGroupChatMessagesResponseData"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetGroupChatMessagesResponseData": {
+        "type": "object",
+        "properties": {
+          "groupChatId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Message"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetGroupChatsRequest": {
+        "type": "object",
+        "properties": {
+          "recipientIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetGroupChatsResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GroupChat"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetMyAccountsRequest": {
+        "type": "object",
+        "properties": {
+          "main": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sub": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "shared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "details": {
+            "type": "boolean",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetMyAccountsResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/GetMyAccountsResponseData"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetMyAccountsResponseData": {
+        "type": "object",
+        "properties": {
+          "subAccounts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Account"
+            },
+            "nullable": true
+          },
+          "sharedAccounts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Account"
+            },
+            "nullable": true
+          },
+          "mainAccount": {
+            "$ref": "#/components/schemas/Account"
+          },
+          "currentAccount": {
+            "$ref": "#/components/schemas/Account"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetMyChannelsRequest": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "boolean"
+          },
+          "editor": {
+            "type": "boolean"
+          },
+          "subscriber": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetMyChannelsResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Channel"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetP2PChatsRequest": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "GetP2PChatsResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/P2pChat"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetP2pChatMessagesRequest": {
+        "type": "object",
+        "required": [
+          "recipientId"
+        ],
+        "properties": {
+          "recipientId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "messageId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "limit": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetP2pChatMessagesResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/GetP2pChatMessagesResponseData"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetP2pChatMessagesResponseData": {
+        "type": "object",
+        "properties": {
+          "recipientId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Message"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetTunnelsRequest": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "GetTunnelsResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/GetTunnelsResponseData"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetTunnelsResponseData": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "tunnelId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "clientPort": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "clientPath": {
+              "type": "string"
+            },
+            "publicKey": {
+              "type": "string"
+            },
+            "host": {
+              "type": "string"
+            },
+            "username": {
+              "type": "string"
+            },
+            "port": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "tunnelUrl": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "GroupChat": {
+        "type": "object",
+        "properties": {
+          "groupChatId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "recipientIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "InviteToGroupChatRequest": {
+        "type": "object",
+        "required": [
+          "groupChatId",
+          "recipientIds"
+        ],
+        "properties": {
+          "groupChatId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "recipientIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "InviteToGroupChatResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/InviteToGroupChatResponseData"
+          }
+        },
+        "additionalProperties": false
+      },
+      "InviteToGroupChatResponseData": {
+        "type": "object",
+        "properties": {
+          "groupChatId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "invitedRecipientIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "MatchedCategory": {
+        "type": "object",
+        "properties": {
+          "categoryTitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "categoryID": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "matchedCount": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MatchedCategory"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Message": {
+        "type": "object",
+        "properties": {
+          "messageId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "publisherId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "publishedOn": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "updatedOn": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "messageReactions": {
+            "type": "object",
+            "additionalProperties": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            "nullable": true
+          },
+          "dataComponent": {
+            "$ref": "#/components/schemas/DataComponent"
+          }
+        },
+        "additionalProperties": false
+      },
+      "OpenBucketRequest": {
+        "type": "object",
+        "required": [
+          "bucketId"
+        ],
+        "properties": {
+          "bucketId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false
+      },
+      "OpenBucketResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/Bucket"
+          }
+        },
+        "additionalProperties": false
+      },
+      "OpenTunnelRequest": {
+        "type": "object",
+        "required": [
+          "tunnelId"
+        ],
+        "properties": {
+          "tunnelId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false
+      },
+      "OpenTunnelResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/OpenTunnelResponseData"
+          }
+        },
+        "additionalProperties": false
+      },
+      "OpenTunnelResponseData": {
+        "type": "object",
+        "properties": {
+          "tunnelId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "host": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "port": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tunnelUrl": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "P2pChat": {
+        "type": "object",
+        "properties": {
+          "recipientId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Post": {
+        "type": "object",
+        "properties": {
+          "publishedOn": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "editedOn": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "dataComponent": {
+            "$ref": "#/components/schemas/DCBucketReference"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Profile": {
+        "type": "object",
+        "properties": {
+          "profileId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "featureType": {
+            "type": "string",
+            "enum": [
+              "profile"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "avatar": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "visible": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "locked": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "enableReactions": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "pinWall": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataComponent"
+            },
+            "nullable": true
+          },
+          "subBuckets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Bucket"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ReactGroupChatMessageRequest": {
+        "type": "object",
+        "required": [
+          "messageId",
+          "reaction"
+        ],
+        "properties": {
+          "messageId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "reaction": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ReactGroupChatMessageResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/ReactGroupChatMessageResponseData"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ReactGroupChatMessageResponseData": {
+        "type": "object",
+        "properties": {
+          "messageId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "addedReaction": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ReactP2pChatMessageRequest": {
+        "type": "object",
+        "properties": {
+          "messageId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "reaction": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ReactP2pChatMessageResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/ReactP2pChatMessageResponseData"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ReactP2pChatMessageResponseData": {
+        "type": "object",
+        "properties": {
+          "messageId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "addedReaction": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RemoveP2pChatMessageReactionResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/RemoveP2pChatMessageReactionResponseData"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RemoveP2pChatMessageReactionResponseData": {
+        "type": "object",
+        "properties": {
+          "messageId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "removedReaction": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RemoveGroupChatMessageReactionRequest": {
+        "type": "object",
+        "required": [
+          "messageId",
+          "reaction"
+        ],
+        "properties": {
+          "messageId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "reaction": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RemoveGroupChatMessageReactionResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/RemoveGroupChatMessageReactionResponseData"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RemoveGroupChatMessageReactionResponseData": {
+        "type": "object",
+        "properties": {
+          "messageId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "removedReaction": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RemoveLikeFromBucketRequest": {
+        "type": "object",
+        "required": [
+          "bucketId"
+        ],
+        "properties": {
+          "bucketId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RemoveLikeFromBucketResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/RemoveLikeToBucketResponseData"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RemoveLikeToBucketResponseData": {
+        "type": "object",
+        "properties": {
+          "bucketId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "like": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RemoveP2pChatMessageReactionRequest": {
+        "type": "object",
+        "properties": {
+          "messageId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "reaction": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ReplyGroupChatMessageRequest": {
+        "type": "object",
+        "required": [
+          "messageId",
+          "dataComponent"
+        ],
+        "properties": {
+          "messageId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "dataComponent": {
+            "$ref": "#/components/schemas/DCSimpleText"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ReplyGroupChatMessageResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/ReplyGroupChatMessageResponseData"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ReplyGroupChatMessageResponseData": {
+        "type": "object",
+        "properties": {
+          "messageId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "sentReply": {
+            "$ref": "#/components/schemas/ReplyMessage"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ReplyMessage": {
+        "type": "object",
+        "properties": {
+          "messageId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "publisherId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "publishedOn": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "updatedOn": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "dataComponent": {
+            "$ref": "#/components/schemas/DCSimpleText"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ReplyP2pChatMessageRequest": {
+        "type": "object",
+        "properties": {
+          "messageId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "dataComponent": {
+            "$ref": "#/components/schemas/DCSimpleText"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ReplyP2pChatMessageResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/ReplyP2pChatMessageResponseData"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ReplyP2pChatMessageResponseData": {
+        "type": "object",
+        "properties": {
+          "messageId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "sentReply": {
+            "$ref": "#/components/schemas/ReplyMessage"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SendToChannelRequest": {
+        "type": "object",
+        "required": [
+          "channelId",
+          "dataComponent"
+        ],
+        "properties": {
+          "channelId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "dataComponent": {
+            "$ref": "#/components/schemas/DataComponent"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SendToChannelResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/SendToChannelResponseData"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SendToChannelResponseData": {
+        "type": "object",
+        "properties": {
+          "channelId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "sentMessage": {
+            "$ref": "#/components/schemas/Message"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SendToGroupChatRequest": {
+        "type": "object",
+        "required": [
+          "groupChatId",
+          "dataComponent"
+        ],
+        "properties": {
+          "groupChatId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "dataComponent": {
+            "$ref": "#/components/schemas/DataComponent"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SendToGroupChatResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/SendToGroupChatResponseData"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SendToGroupChatResponseData": {
+        "type": "object",
+        "properties": {
+          "groupChatId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "sentMessage": {
+            "$ref": "#/components/schemas/Message"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SendToP2pChatRequest": {
+        "type": "object",
+        "properties": {
+          "recipientId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "dataComponent": {
+            "$ref": "#/components/schemas/DataComponent"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SendToP2pChatResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/SendToP2pResponseData"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SendToP2pResponseData": {
+        "type": "object",
+        "properties": {
+          "recipientId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "sentMessage": {
+            "$ref": "#/components/schemas/Message"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SubscribeToChannelRequest": {
+        "type": "object",
+        "required": [
+          "channelId"
+        ],
+        "properties": {
+          "channelId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SubscribeToChannelResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/SubscribeToChannelResponseData"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SubscribeToChannelResponseData": {
+        "type": "object",
+        "properties": {
+          "channelId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "subscribed": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UnsubscribeToChannelRequest": {
+        "type": "object",
+        "required": [
+          "channelId"
+        ],
+        "properties": {
+          "channelId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UnsubscribeToChannelResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/UnsubscribeToChannelResponseData"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UnsubscribeToChannelResponseData": {
+        "type": "object",
+        "properties": {
+          "channelId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "subscribed": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateAccountProfileRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "avatar": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "visible": {
+            "type": "boolean"
+          },
+          "locked": {
+            "type": "boolean"
+          },
+          "enableReactions": {
+            "type": "boolean"
+          },
+          "pinWall": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataComponent"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateAccountProfileResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "accountId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "updatedProfile": {
+                "$ref": "#/components/schemas/Profile"
+              }
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateBucketContentRequest": {
+        "$ref": "#/components/schemas/DCBucket"
+      },
+      "UpdateBucketContentResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/UpdateBucketContentResponseData"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateBucketContentResponseData": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "updatedBucket": {
+            "$ref": "#/components/schemas/Bucket"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateChannelMessageRequest": {
+        "type": "object",
+        "required": [
+          "messageId",
+          "dataComponent"
+        ],
+        "properties": {
+          "messageId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "dataComponent": {
+            "$ref": "#/components/schemas/DataComponent"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateChannelMessageResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/UpdateChannelMessageResponseData"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateChannelMessageResponseData": {
+        "type": "object",
+        "properties": {
+          "updatedMessage": {
+            "$ref": "#/components/schemas/Message"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateGroupChatMessageRequest": {
+        "type": "object",
+        "required": [
+          "messageId",
+          "dataComponent"
+        ],
+        "properties": {
+          "messageId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "dataComponent": {
+            "$ref": "#/components/schemas/DataComponent"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateGroupChatMessageResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/UpdateGroupChatMessageResponseData"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateGroupChatMessageResponseData": {
+        "type": "object",
+        "properties": {
+          "updatedMessage": {
+            "$ref": "#/components/schemas/Message"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateP2pChatMessageRequest": {
+        "type": "object",
+        "properties": {
+          "messageId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "dataComponent": {
+            "$ref": "#/components/schemas/DataComponent"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateP2pChatMessageResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/UpdateP2pMessageResponseData"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateP2pMessageResponseData": {
+        "type": "object",
+        "properties": {
+          "updatedMessage": {
+            "$ref": "#/components/schemas/Message"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdatePostContentRequest": {
+        "type": "object",
+        "properties": {
+          "bucketId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "avatar": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "visible": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "locked": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "enableReactions": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "dataComponents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataComponent"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdatePostContentResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/UpdatePostContentResponseData"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdatePostContentResponseData": {
+        "type": "object",
+        "properties": {
+          "feedId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "accountId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "updatedPost": {
+            "$ref": "#/components/schemas/Post"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UploadFileResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/UploadFileResponseData"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UploadFileResponseData": {
+        "type": "object",
+        "properties": {
+          "uploadedFiles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FileInfo"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}
