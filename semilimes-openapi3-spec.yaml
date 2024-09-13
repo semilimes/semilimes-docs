@@ -11,7 +11,7 @@ info:
     name: semilimes
     url: https://www.semilimes.com
     email: contact@semilimes.com
-  version: 1.0.3
+  version: 1.0.4
 servers:
   - url: https://api.semilimes.net
 paths:
@@ -504,6 +504,29 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '402':
           $ref: '#/components/responses/PaymentRequired'
+  /communication/p2p/signal/typing:
+    post:
+      tags:
+        - Communication
+      summary: Signal user typing in P2P Chat
+      description: This endpoint lets the other P2P chat member know that the user is going to send a message.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignalTypingP2pChatRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
   /communication/groupchat:
     get:
       tags:
@@ -768,7 +791,30 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
         '402':
-          $ref: '#/components/responses/PaymentRequired'                
+          $ref: '#/components/responses/PaymentRequired'   
+  /communication/groupchat/signal/typing:
+    post:
+      tags:
+        - Communication
+      summary: Signal user typing in Group Chat
+      description: This endpoint lets the other group chat members know that the user is going to send a message.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignalTypingGroupChatRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'             
   /communication/channel/my:
     get:
       tags:
@@ -1821,9 +1867,11 @@ components:
       oneOf:
         - $ref: '#/components/schemas/DCSimpleText'
         - $ref: '#/components/schemas/DCHtmlText'
+        - $ref: '#/components/schemas/DCGauge'
         - $ref: '#/components/schemas/DCFile'
         - $ref: '#/components/schemas/DCContact'
         - $ref: '#/components/schemas/DCLocation'
+        - $ref: '#/components/schemas/DCAppointment'
         - $ref: '#/components/schemas/DCWebView'
         - $ref: '#/components/schemas/DCChannel'
         - $ref: '#/components/schemas/DCTunnel'
@@ -1846,6 +1894,69 @@ components:
           enum:
             - html
         html:
+          type: string
+    DCGauge:
+      type: object
+      properties:
+        dataComponentType:
+          type: string
+          enum:
+            - gauge
+        title: 
+          type: string
+        thickness:
+          type: number
+          minimum: 10
+          maximum: 100
+        degrees:
+          type: number
+          minimum: 30
+          maximum: 360
+        spacing:
+          type: number
+          minimum: 0
+          maximum: 20
+        fontSize:
+          type: number
+          minimum: 8
+          maximum: 48
+        value: 
+          type: number
+          minimum: 0
+          maximum: 100
+        displayValue: 
+          type: string
+        segments:
+          type: array
+          items:
+            type: object
+            properties:
+              from:
+                type: number
+                minimum: 0
+                maximum: 100
+              to: 
+                type: number
+                minimum: 0
+                maximum: 100
+              color:
+                type: string
+        pointer:
+          type: string
+          enum:
+            - none
+            - triangle
+            - circle
+            - needle
+        pointerColor:
+          type: string
+        progressBar:
+          type: string
+          enum:
+            - none
+            - basic
+            - rounded
+        progressBarColor:
           type: string
     DCFile:
       type: object
@@ -1883,6 +1994,30 @@ components:
           type: number
         longitude:
           type: number
+    DCAppointment:
+      type: object
+      properties:
+        dataComponentType: 
+          type: string
+          enum:
+            - appointment
+        title:
+          type: string
+        description:
+          type: string
+        start:
+          type: number
+        end:
+          type: number
+        allDay:
+          type: boolean
+        location:
+          type: object
+          properties:
+            latitude:
+              type: number
+            longitude:
+              type: number
     DCWebView:
       type: object
       properties:
@@ -1891,6 +2026,14 @@ components:
           enum:
             - webview
         url:
+          type: string
+        displayMode:
+          type: string
+          enum:
+            - link
+            - thumbnail
+            - liveweb
+        linkDisplayName:
           type: string
         enableFullScreenView:
           type: boolean
@@ -1932,6 +2075,14 @@ components:
           type: boolean
         retainStatus:
           type: boolean
+        align:
+          type: string
+          enum:
+            - left
+            - center
+            - right
+        authorizeSubmit:
+          type: boolean
         submitText:
           type: string
         receiver:
@@ -1945,6 +2096,8 @@ components:
                 - contact
                 - groupchat
                 - channel
+        hideSubmissionMsg:
+          type: boolean
         refName: 
           type: string
         formComponents:
@@ -2037,6 +2190,69 @@ components:
         value: 
           type: string
           nullable: true
+    FCGauge:
+      type: object
+      properties:
+        dataComponentType:
+          type: string
+          enum:
+            - gauge
+        title: 
+          type: string
+        thickness:
+          type: number
+          minimum: 10
+          maximum: 100
+        degrees:
+          type: number
+          minimum: 30
+          maximum: 360
+        spacing:
+          type: number
+          minimum: 0
+          maximum: 20
+        fontSize:
+          type: number
+          minimum: 8
+          maximum: 48
+        value: 
+          type: number
+          minimum: 0
+          maximum: 100
+        displayValue: 
+          type: string
+        segments:
+          type: array
+          items:
+            type: object
+            properties:
+              from:
+                type: number
+                minimum: 0
+                maximum: 100
+              to: 
+                type: number
+                minimum: 0
+                maximum: 100
+              color:
+                type: string
+        pointer:
+          type: string
+          enum:
+            - none
+            - triangle
+            - circle
+            - needle
+        pointerColor:
+          type: string
+        progressBar:
+          type: string
+          enum:
+            - none
+            - basic
+            - rounded
+        progressBarColor:
+          type: string
     FCButtonList: 
       type: object
       properties:
@@ -2055,6 +2271,16 @@ components:
           nullable: true
         verticalList:
           type: boolean
+        lineSize:
+          type: string
+          enum:
+            - flexible
+            - 1
+            - 2
+            - 3
+            - 4
+            - 5
+            - 6
         options:
           type: array
           items:
@@ -2064,6 +2290,12 @@ components:
                 type: string
               value:
                 type: string
+              icon:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    nullable: true
     FCSingleChoice: 
       type: object
       properties:
@@ -2157,6 +2389,7 @@ components:
           type: integer
         step:
           type: integer
+          minimum: 0
     FCDatePicker: 
       type: object
       properties:
@@ -2296,6 +2529,24 @@ components:
           type: string
         multiSelection:
           type: boolean
+    FCColorPicker:
+      type: object
+      properties:
+        refName:
+          type: string
+        formComponentType:
+          type: string
+          enum:
+            - colorpicker
+        title:
+          type: string
+        requiredSelection:
+          type: boolean
+        value:
+          type: string
+          nullable: true
+        actionButtonTitle:
+          type: string
     FCBucketPicker: 
       type: object
       properties:
@@ -2339,6 +2590,48 @@ components:
           type: string
         multiSelection:
           type: boolean
+    FCEventPicker:
+      type: object
+      properties:
+        refName:
+          type: string
+        formComponentType:
+          type: string
+          enum:
+            - eventpicker
+        title:
+          type: string
+        requiredSelection:
+          type: boolean
+        multiSelection:
+          type: boolean
+        eventsDisplayMode:
+          type: string
+          enum:
+            - list
+            - buttons
+        events:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              start:
+                type: integer
+              title:
+                type: string
+              description:
+                type: string
+              referenceBucketId:
+                type: string
+              additionalInfo:
+                type: object
+        value:
+          type: array
+          items:
+            type: object
+          nullable: true
     FCHiddenValue: 
       type: object
       properties:
@@ -2351,6 +2644,19 @@ components:
         value:
           type: string
           nullable: true
+    FCCallButton:
+      type: object
+      properties:
+        refName:
+          type: string
+        formComponentType: 
+          type: string
+          enum:
+            - callbutton
+        title:
+          type: string
+        actionButtonTitle:
+          type: string
     FCQrCodeScanner: 
       type: object
       properties:
@@ -2364,6 +2670,12 @@ components:
           type: string
         requiredSelection:
           type: boolean
+        mode:
+          type: string
+          enum:
+            - auto
+            - qrcode
+            - barcode
         value:
           type: string
           nullable: true
@@ -2407,6 +2719,7 @@ components:
       oneOf:
         - $ref: '#/components/schemas/FCLabel'
         - $ref: '#/components/schemas/FCTextBox'
+        - $ref: '#/components/schemas/FCGauge'
         - $ref: '#/components/schemas/FCButtonList'
         - $ref: '#/components/schemas/FCSingleChoice'
         - $ref: '#/components/schemas/FCMultiChoice'
@@ -2418,6 +2731,9 @@ components:
         - $ref: '#/components/schemas/FCPhotoPicker'
         - $ref: '#/components/schemas/FCFilePicker'
         - $ref: '#/components/schemas/FCContactPicker'
+        - $ref: '#/components/schemas/FCColorPicker'
+        - $ref: '#/components/schemas/FCEventPicker'
+        - $ref: '#/components/schemas/FCCallButton'
         - $ref: '#/components/schemas/FCBucketPicker'
         - $ref: '#/components/schemas/FCHiddenValue'
         - $ref: '#/components/schemas/FCQrCodeScanner'
@@ -3373,6 +3689,12 @@ components:
         channelId:
           type: string
           format: uuid
+        options:
+          type: object
+          properties:
+            silent:
+              type: boolean
+          nullable: true
         dataComponent:
           $ref: '#/components/schemas/DataComponent'
       additionalProperties: false
@@ -3410,6 +3732,12 @@ components:
           type: string
           format: uuid
           nullable: true
+        options:
+          type: object
+          properties:
+            silent:
+              type: boolean
+          nullable: true
         dataComponent:
           $ref: '#/components/schemas/DataComponent'
       additionalProperties: false
@@ -3443,6 +3771,12 @@ components:
         recipientId:
           type: string
           format: uuid
+        options:
+          type: object
+          properties:
+            silent:
+              type: boolean
+          nullable: true
         dataComponent:
           $ref: '#/components/schemas/DataComponent'
       additionalProperties: false
@@ -3469,6 +3803,24 @@ components:
           format: uuid
         sentMessage:
           $ref: '#/components/schemas/Message'
+      additionalProperties: false
+    SignalTypingP2pChatRequest:
+      type: object
+      required:
+        - recipientId
+      properties:
+        recipientId:
+          type: string
+          format: uuid
+      additionalProperties: false
+    SignalTypingGroupChatRequest:
+      type: object
+      required:
+        - groupChatId
+      properties:
+        recipientId:
+          type: string
+          format: uuid
       additionalProperties: false
     SubscribeToChannelRequest:
       type: object
@@ -3614,6 +3966,12 @@ components:
         messageId:
           type: string
           format: uuid
+        options:
+          type: object
+          properties:
+            silent:
+              type: boolean
+          nullable: true
         dataComponent:
           $ref: '#/components/schemas/DataComponent'
       additionalProperties: false
@@ -3647,6 +4005,12 @@ components:
         messageId:
           type: string
           format: uuid
+        options:
+          type: object
+          properties:
+            silent:
+              type: boolean
+          nullable: true
         dataComponent:
           $ref: '#/components/schemas/DataComponent'
       additionalProperties: false
@@ -3677,6 +4041,12 @@ components:
         messageId:
           type: string
           format: uuid
+        options:
+          type: object
+          properties:
+            silent:
+              type: boolean
+          nullable: true
         dataComponent:
           $ref: '#/components/schemas/DataComponent'
       additionalProperties: false
