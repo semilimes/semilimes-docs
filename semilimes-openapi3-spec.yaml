@@ -11,7 +11,7 @@ info:
     name: semilimes
     url: https://www.semilimes.com
     email: contact@semilimes.com
-  version: 1.0.4
+  version: 1.0.5
 servers:
   - url: https://api.semilimes.net
 paths:
@@ -1622,51 +1622,6 @@ components:
             $ref: '#/components/schemas/DataComponent'
           nullable: true
       additionalProperties: false
-    DCBucket:
-      type: object
-      properties:
-        bucketId:
-          type: string
-          format: uuid
-        dataComponentType:
-          type: string
-          enum:
-            - bucket
-        title:
-          type: string
-          nullable: true            
-        description:
-          type: string
-          nullable: true
-        avatar:
-          type: string
-          format: uuid
-          nullable: true
-        visible:
-          type: boolean
-          nullable: true
-        locked:
-          type: boolean
-          nullable: true
-        enableReactions:
-          type: boolean
-          nullable: true
-        dataComponents:
-          type: array
-          items:
-            $ref: '#/components/schemas/DataComponent'
-      additionalProperties: false
-    DCBucketReference:
-      type: object
-      properties:
-        dataComponentType:
-          type: string
-          enum: 
-            - bucket
-        bucketId:
-          type: string
-          format: uuid
-      additionalProperties: false
     Channel:
       type: object
       properties:
@@ -1868,6 +1823,7 @@ components:
         - $ref: '#/components/schemas/DCSimpleText'
         - $ref: '#/components/schemas/DCHtmlText'
         - $ref: '#/components/schemas/DCGauge'
+        - $ref: '#/components/schemas/DCLineChart'
         - $ref: '#/components/schemas/DCFile'
         - $ref: '#/components/schemas/DCContact'
         - $ref: '#/components/schemas/DCLocation'
@@ -1958,6 +1914,77 @@ components:
             - rounded
         progressBarColor:
           type: string
+    DCLineChart:
+      type: object
+      properties:
+        dataComponentType:
+          type: string
+          enum: 
+            - linechart
+        title:
+          type: string
+        options:
+          type: object
+          properties:
+            x: 
+              type: object
+              properties:
+                label:
+                  type: object
+                  properties:
+                    text:
+                      type: string
+                showTitles:
+                  type: boolean
+            y: 
+              type: object
+              properties:
+                label:
+                  type: object
+                  properties:
+                    text:
+                      type: string
+                showTitles:
+                  type: boolean
+            grid:
+              type: object
+              properties:
+                display:
+                  type: boolean
+            background:
+              type: object
+              properties:
+                color:
+                  type: string
+        lines:
+          type: array
+          items:
+            type: object
+            properties:
+              options:
+                type: object
+                properties:
+                  line:
+                    type: object
+                    properties:
+                      color: 
+                        type: string
+                      width:
+                        type: number
+                  point:
+                    type: object
+                    properties:
+                      display:
+                        type: boolean
+              data:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    x: 
+                      type: number
+                    y: 
+                      type: number
     DCFile:
       type: object
       properties:
@@ -2104,6 +2131,51 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/FormComponent'
+    DCBucket:
+      type: object
+      properties:
+        bucketId:
+          type: string
+          format: uuid
+        dataComponentType:
+          type: string
+          enum:
+            - bucket
+        title:
+          type: string
+          nullable: true            
+        description:
+          type: string
+          nullable: true
+        avatar:
+          type: string
+          format: uuid
+          nullable: true
+        visible:
+          type: boolean
+          nullable: true
+        locked:
+          type: boolean
+          nullable: true
+        enableReactions:
+          type: boolean
+          nullable: true
+        dataComponents:
+          type: array
+          items:
+            $ref: '#/components/schemas/DataComponent'
+      additionalProperties: false
+    DCBucketReference:
+      type: object
+      properties:
+        dataComponentType:
+          type: string
+          enum: 
+            - bucket
+        bucketId:
+          type: string
+          format: uuid
+      additionalProperties: false
     DeleteTunnelRequest:
       type: object
       required:
