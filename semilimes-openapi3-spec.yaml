@@ -6,6 +6,49 @@ info:
     
     > **Important Note**: This schema covers HTTP-only type of endpoints. To complete your client with websocket support, please refer to the official semilimes API documentation at the [websocket section](https://www.semilimes.com/developers/#websocket)
     
+    ## Changelog
+
+    ### 1.0.5
+    
+    - **New** - DCLineChart dataComponent
+    
+    ### 1.0.4
+    
+    - **New** - /communication/p2p/signal/typing endpoint
+    - **New** - /communication/groupchat/signal/typing endpoint
+    - **New** - DCGauge dataComponent
+    - **New** - DCAppointment dataComponent
+    - **New** - FCGauge formComponent
+    - **New** - FCColorPicker formComponent
+    - **New** - FCEventPicker formComponent
+    - **New** - FCCallButton formComponent
+    - **Add** - DCWebView: added *displayMode* and *linkDisplayName* properties
+    - **Add** - DCForm: added *align*, *authorizeSubmit*, *hideSubmissionMsg* properties
+    - **Add** - FCButtonList: added *lineSize* and *options/icon* properties
+    - **Add** - FCSlider: added "minimum" definition to *step* property
+    - **Add** - FCQrCodeScanner: added *mode* property
+    - **Add** - SendToChannelRequest: added *options* property
+    - **Add** - SendToGroupChatRequest: added *options* property
+    - **Add** - SendToP2pChatRequest: added *options* property
+    - **Add** - UpdateChannelMessageRequest: added *options* property
+    - **Add** - UpdateGroupChatMessageRequest: added *options* property
+    - **Add** - UpdateP2pChatMessageRequest: added *options* property
+    
+    ### 1.0.3
+    
+    - **Fix** - /service/file/download endpoint: reverted http verb to POST
+    
+    ### 1.0.2
+    
+    - **Fix** - /service/file/download endpoint: change request schema from parameters to requestBody
+    
+    ### 1.0.1
+    
+    - **Add** - FCSingleChoice: added *mode* property
+    - **Fix** - /service/file/download endpoint: changed http verb from POST to GET
+    - **Fix** - /service/file/download endpoint: removed duplicated get definition
+    - **New** - /service/llms endpoint
+
   termsOfService: https://www.semilimes.com/terms-and-privacy/#terms-of-service
   contact: 
     name: semilimes
